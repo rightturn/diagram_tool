@@ -1,0 +1,10 @@
+.SVGline {
+    /*  What color line do we want, to connect each of our circular employee image photos ? */
+    stroke: #141;
+    stroke-width: 3;
+}
+
+.SVGlineDashed {
+    /*  What type of line shall we use, to connect an employee to a Sub-Manager ? */
+    stroke-dasharray: 3, 3;
+}

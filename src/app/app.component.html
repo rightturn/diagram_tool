@@ -1,0 +1,27 @@
+<p>Welcome to the Southwind app</p>
+
+<svg width="1000" height="1000">
+  <g *ngFor="let rel of relationships">
+    <line *ngIf="employees && rel" class="SVGline" [ngClass]="{'SVGlineDashed':IsSubManager(rel.type)}"
+      [attr.x1]="GetEmployee(rel.employeeId).xpos+50" [attr.y1]="GetEmployee(rel.employeeId).ypos+50"
+      [attr.x2]="GetEmployee(rel.managerId).xpos+50" [attr.y2]="GetEmployee(rel.managerId).ypos+50">
+    </line>
+  </g>
+  <g *ngFor="let employee of employees">
+    <!-- Image of the employee -->
+    <image [attr.x]="employee.xpos-4" [attr.y]="employee.ypos-4" width="110" height="110"
+      [attr.xlink:href]="employee.imageUrl" />
+
+    <!-- Employee first & last name -->
+    <text [attr.x]="employee.xpos+50" [attr.y]="employee.ypos+115" width="400" height="30" class="cssEmployeeName"
+      dominant-baseline="middle" text-anchor="middle">
+      {{ employee.firstName }} {{ employee.lastName }}
+    </text>
+
+    <!-- Employee job -->
+    <text [attr.x]="employee.xpos+50" [attr.y]="employee.ypos+132" width="400" height="30" class="cssEmployeeJob"
+      dominant-baseline="middle" text-anchor="middle">
+      {{ employee.job  }}
+    </text>
+  </g>
+</svg>
