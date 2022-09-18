@@ -15,7 +15,7 @@ export class AppComponent {
     this.employees = employeeData.employees;
     this.relationships = employeeData.relationships;
   }
-  public GetEmployee(id: number) {
+  public GetEmployee(id: number): any {
     //  Search for, and return, an Employee record, with a particular id value
     const employee = this.employees.filter(emp => {
       return emp.id === id;
@@ -28,6 +28,18 @@ export class AppComponent {
 
   public IsSubManager(relationshipType: string) {
     return (relationshipType === 'Sub-manager');
+  }
+
+
+  public mousedown(event: Event){
+    let e = event as MouseEvent;
+
+    let element = event.target as HTMLElement;
+    let rect = element.getBoundingClientRect();
+    
+    // element.className
+    // alert(`mouse position : ${e.clientX}:${e.clientY}`);
+    alert(`element position : ${rect.x}:${rect.y}`);
   }
 }
 
