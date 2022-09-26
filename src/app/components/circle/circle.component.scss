@@ -1,0 +1,72 @@
+
+$left-sidebar : 250px;
+$right-sidebar : 250px;
+$top-bar: 50px;
+$bottom-bar:20px;
+
+.SVGline {
+    /*  What color line do we want, to connect each of our circular employee image photos ? */
+    stroke: #141;
+    stroke-width: 3;
+}
+
+.SVGlineDashed {
+    /*  What type of line shall we use, to connect an employee to a Sub-Manager ? */
+    stroke-dasharray: 3, 3;
+}
+
+svg{
+    border:1px solid black;
+    position: absolute;
+    left:0;
+    width: 100%;
+    height: 100%;
+    min-width: 1000px;
+    min-height: 1000px;
+}
+
+.top{
+    background: gray;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height:$top-bar;
+}
+
+.left{
+    background: green;
+    position: absolute;
+    top: $top-bar;
+    left: 0;
+    bottom: $bottom-bar;
+    width: $left-sidebar;
+}
+
+.center{
+    background: lightblue;
+    position: absolute;
+    top: $top-bar;
+    left:$left-sidebar;
+    right: $right-sidebar;
+    bottom: $bottom-bar;
+    overflow: auto;
+}
+
+.right{
+    background: greenyellow;
+    position: absolute;
+    top: $top-bar;
+    right: 0;
+    bottom: $bottom-bar;
+    width: $right-sidebar
+}
+
+.bottom{
+    background: darkgray;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: $bottom-bar;
+}

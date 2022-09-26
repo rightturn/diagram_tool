@@ -3,10 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { Circle } from './components/circle/circle.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    Circle,
+    AppComponent,
   ],
   imports: [
     BrowserModule,
