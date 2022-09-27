@@ -2,7 +2,7 @@
 <div class="left"></div>
 <div class="center">
     <svg-container containerId="svg-element" (mouseMoveEvent)="mouseMove($event)">
-        <svg-rect (clickEvent)="clickRect($event,rectangular)" id="rect" [height]="rectangular.height" [width]="rectangular.width" [color]="rectangular.color" [rx]="rectangular.rx" [ry]="rectangular.ry" [x]="rectangular.x" [y]="rectangular.y" *ngFor="let rectangular of rectangulars"></svg-rect>
+        <svg-rect (mouseOutEvent)="mouseOutRect($event)" (mouseOverEvent)="mouseOverRect($event)" (clickEvent)="clickRect($event,rectangular)" id="rect" [height]="rectangular.height" [width]="rectangular.width" [color]="rectangular.color" [rx]="rectangular.rx" [ry]="rectangular.ry" [x]="rectangular.x" [y]="rectangular.y" *ngFor="let rectangular of rectangulars"></svg-rect>
         <svg-circle [x]="point.x" [y]="point.y" [diameter]="radiusCircle * 2" *ngFor="let point of points"></svg-circle>
     </svg-container>
 </div>

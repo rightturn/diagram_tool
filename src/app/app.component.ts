@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { SvgRectDirective } from 'ngx-svg/src/app/modules/directives/svg-rect.directive';
 // import employeeData from '../assets/SampleData/employees.json';
 
 @Component({
@@ -30,6 +31,8 @@ export class AppComponent {
         id: this.getNextIdForRectangle()
       }
     );
+
+    this.addNew();
   }
 
   /**
@@ -37,11 +40,11 @@ export class AppComponent {
    */
   addNew() {
     this.rectangulars.push({
-      height: 0,
-      width: 0,
+      height: 30,
+      width: 30,
       color: '#000',
-      x: 0,
-      y: 0,
+      x: 30,
+      y: 30,
       rx: 0,
       ry: 0,
       id: this.getNextIdForRectangle()
@@ -72,6 +75,18 @@ export class AppComponent {
 
     this.updateBoxBoundary(rect);
 
+  }
+
+  public mouseOutRect(event: MouseEvent){
+    console.log("mouseOutRect");
+    let t: HTMLElement = (event.target as HTMLElement);
+    t.classList.remove("rect_border")
+  }
+
+  public mouseOverRect(event: MouseEvent){
+    console.log("mouseOverRect");
+    let t: HTMLElement = (event.target as HTMLElement);
+    t.classList.add("rect_border")
   }
 
   public mouseMove(event: Point) {
