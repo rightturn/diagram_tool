@@ -7,26 +7,68 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  // public employees: Employee[];
-  // public relationships: Relationship[];
-  public width: number = 10;
-  public height: number = 10;
-  public x: number = 50;
-  public y: number = 50;
-  public active: boolean = false;
-  public boxshow: boolean = false;
-  public circleshow: boolean = false;
+
+  public rectangulars: Rectangular[] = [{
+    height: 100,
+    width: 200,
+    color: 'rgba(125, 125, 32, 0.5)',
+    x: 20,
+    y: 30,
+    rx: 0,
+    ry: 0
+  }, {
+    height: 50,
+    width: 50,
+    color: 'rgba(12, 32, 222, 0.7)',
+    x: 200,
+    y: 20,
+    rx: 10,
+    ry: 15
+  }];
+
 
   constructor() {
   }
 
+  /**
+  * Adds new rectangular element.
+  */
+  addNew() {
+    this.rectangulars.push({
+      height: 0,
+      width: 0,
+      color: '#000',
+      x: 0,
+      y: 0,
+      rx: 0,
+      ry: 0
+    });
+  }
+
+  /**
+   * Retrieves the maximum height of all elements.
+   * @returns Height of the container.
+   */
+  getHeight(): number {
+    return 0;
+    // return Math.max.apply(Math, this.rectangulars.map(el => el.height + el.y)) + 20;
+  }
+
+  /**
+   * Removes specific rectangular element.
+   * @param index - Index of rectangular element, which needs to be removed.
+   */
+  removeRow(index: number) {
+    this.rectangulars.splice(index, 1);
+  }
+
   public pointerdown(event: PointerEvent) {
     // console.log(event);
-    this.active = true;
+    // this.active = true;
   }
 
   public pointerup(event: PointerEvent) {
-    this.active = false;
+    // this.active = false;
   }
 
   public pointermove(event: PointerEvent) {
@@ -40,77 +82,13 @@ export class AppComponent {
     console.log("This is circle");
   }
 
-  public circle() {
-    this.circleshow = true;
-    this.boxshow = false;
-    this.x = 50;
-    this.y = 50;
-  }
-  public box() {
-    this.circleshow = false;
-    this.boxshow = true;
-    this.x = 50;
-    this.y = 50;
-  }
-  public increaseWidth() {
-    this.width = this.width + 50;
-  }
-  public increaseHeight() {
-    this.height = this.height + 50;
-  }
-  public increaseUp() {
-    this.y = this.y - 50;
-  }
-  public increaseDown() {
-    this.y = this.y + 50;
-  }
-  public increaseLeft() {
-    this.x = this.x + 50;
-  }
-  public increaseRight() {
-    this.x = this.x - 50;
-  }
-  // public GetEmployee(id: number): any {
-  //   //  Search for, and return, an Employee record, with a particular id value
-  //   const employee = this.employees.filter((emp) => {
-  //     return emp.id === id;
-  //   });
-  //   if (employee == null) {
-  //     return null;
-  //   }
-  //   return employee[0];
-  // }
-
-  // public IsSubManager(relationshipType: string) {
-  //   return relationshipType === 'Sub-manager';
-  // }
-
-  // public mousedown(event: Event) {
-  //   let e = event as MouseEvent;
-
-  //   let element = event.target as HTMLElement;
-  //   let rect = element.getBoundingClientRect();
-
-  //   // element.className
-  //   // alert(`mouse position : ${e.clientX}:${e.clientY}`);
-  //   alert(`element position : ${rect.x}:${rect.y}`);
-  // }
 }
-
-// interface Employee {
-//   id: number;
-//   job: string;
-//   firstName: string;
-//   lastName: string;
-//   imageUrl: string;
-//   DOB: string;
-//   phoneNumber: string;
-//   xpos: number;
-//   ypos: number;
-// }
-
-// interface Relationship {
-//   employeeId: number;
-//   managerId: number;
-//   type: string; // "Manager" or "Sub-manager"
-// }
+interface Rectangular {
+  height: number;
+  width: number;
+  color: string;
+  x: number;
+  y: number;
+  rx: number;
+  ry: number;
+}

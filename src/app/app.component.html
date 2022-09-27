@@ -1,18 +1,10 @@
 <div class="top">
-    <button (click)="increaseWidth()">Width</button>
-    <button (click)="increaseHeight()">Height</button>
-    <button (click)="increaseUp()">Up</button>
-    <button (click)="increaseDown()">Down</button>
-    <button (click)="increaseLeft()">Left</button>
-    <button (click)="increaseRight()">Right</button>
-    <button (click)="circle()">Circle</button>
-    <button (click)="box()">Box</button>
 </div>
 <div class="left"></div>
 <div class="center">
-    <svg (pointerdown)="pointerdown($event)" (pointermove)="pointermove($event)" (pointerup)="pointerup($event)">
-    <circle/>
-  </svg>
+    <svg-container containerId="svg-element">
+        <svg-rect [height]="rectangular.height" [width]="rectangular.width" [color]="rectangular.color" [rx]="rectangular.rx" [ry]="rectangular.ry" [x]="rectangular.x" [y]="rectangular.y" *ngFor="let rectangular of rectangulars"></svg-rect>
+    </svg-container>
 </div>
 <div class="right"></div>
 <div class="bottom"></div>
