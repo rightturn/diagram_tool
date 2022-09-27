@@ -7,31 +7,30 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  public rectangulars: Rectangular[] = [
-    {
-      height: 100,
-      width: 200,
-      color: 'rgba(125, 125, 32, 0.5)',
-      x: 20,
-      y: 30,
-      rx: 0,
-      ry: 0,
-    },
-    {
-      height: 50,
-      width: 50,
-      color: 'rgba(12, 32, 222, 0.7)',
-      x: 200,
-      y: 20,
-      rx: 10,
-      ry: 15,
-    },
-  ];
 
-  // public circleX = 15;
-  // public circleY = 26;
-  public radiusCircle = 10;
-  constructor() {}
+  public points: Point[] = [];
+
+  public rectangulars: Rectangular[] = [];
+
+  public radiusCircle = 5;
+
+
+  private activeShape?: Rectangular = undefined;
+
+  constructor() {
+    this.rectangulars.push(
+      {
+        height: 100,
+        width: 200,
+        color: 'rgba(125, 125, 32, 0.5)',
+        x: 20,
+        y: 30,
+        rx: 0,
+        ry: 0,
+        id: this.getNextIdForRectangle()
+      }
+    );
+  }
 
   /**
    * Adds new rectangular element.
@@ -45,6 +44,7 @@ export class AppComponent {
       y: 0,
       rx: 0,
       ry: 0,
+      id: this.getNextIdForRectangle()
     });
   }
 
@@ -65,25 +65,67 @@ export class AppComponent {
     this.rectangulars.splice(index, 1);
   }
 
-  public pointerdown(event: PointerEvent) {
-    // console.log(event);
-    // this.active = true;
+
+  public clickRect(event: MouseEvent, rect: Rectangular) {
+
+    this.toggleBoxActiveState(rect);
+
+    this.updateBoxBoundary(rect);
+
   }
 
-  public pointerup(event: PointerEvent) {
-    // this.active = false;
+  public mouseMove(event: Point) {
+
+    if (this.activeShape) {
+      this.activeShape.x = event.x - this.activeShape.width / 2;
+      this.activeShape.y = event.y - this.activeShape.height / 2;
+      this.updateBoxBoundary(this.activeShape);
+    }
+
   }
 
-  public pointermove(event: PointerEvent) {
-    // if (this.active == true) {
-    //   this.x = event.offsetX;
-    //   this.y = event.offsetY;
-    // }
+  private getNextIdForRectangle(): number {
+    if (this.rectangulars.length > 0) {
+      return this.rectangulars.length;
+    }
+
+    return 1;
   }
 
-  public circlePointerdown(event: PointerEvent) {
-    console.log('This is circle');
+  private toggleBoxActiveState(rect: Rectangular) {
+
+    if (this.activeShape) {
+      this.activeShape = undefined;
+    } else {
+      this.activeShape = rect;
+    }
+
   }
+
+  private updateBoxBoundary(rect: Rectangular) {
+
+    let box: BoxBoundaryCordinates = this.getBoxBoundaryCordinates(rect);
+
+    let top_left: Point = { x: box.left_x, y: box.top_y };
+    let top_right: Point = { x: box.right_x, y: box.top_y };
+    let bottom_right: Point = { x: box.right_x, y: box.bottom_y };
+    let bottom_left: Point = { x: box.left_x, y: box.bottom_y };
+
+    this.points = [top_left, top_right, bottom_right, bottom_left];
+  }
+
+  private getBoxBoundaryCordinates(rect: Rectangular) {
+
+    let left_x: number = rect.x - this.radiusCircle;
+    let right_x: number = left_x + rect.width;
+    let top_y: number = rect.y - this.radiusCircle;
+    let bottom_y: number = top_y + rect.height;
+
+    return {
+      left_x, right_x, top_y, bottom_y
+    };
+  }
+
 }
 interface Rectangular {
   height: number;
@@ -93,4 +135,18 @@ interface Rectangular {
   y: number;
   rx: number;
   ry: number;
+  id: number;
 }
+
+interface Point {
+  x: number;
+  y: number;
+}
+
+interface BoxBoundaryCordinates {
+  left_x: number;
+  right_x: number;
+  top_y: number;
+  bottom_y: number;
+}
+
