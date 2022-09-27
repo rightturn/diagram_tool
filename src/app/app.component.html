@@ -1,10 +1,47 @@
-<div class="top">
-</div>
+<div class="top"></div>
 <div class="left"></div>
 <div class="center">
-    <svg-container containerId="svg-element">
-        <svg-rect [height]="rectangular.height" [width]="rectangular.width" [color]="rectangular.color" [rx]="rectangular.rx" [ry]="rectangular.ry" [x]="rectangular.x" [y]="rectangular.y" *ngFor="let rectangular of rectangulars"></svg-rect>
-    </svg-container>
+  <svg-container containerId="svg-element">
+    <svg-rect
+      id="rect"
+      [height]="rectangular.height"
+      [width]="rectangular.width"
+      [color]="rectangular.color"
+      [rx]="rectangular.rx"
+      [ry]="rectangular.ry"
+      [x]="rectangular.x"
+      [y]="rectangular.y"
+      *ngFor="let rectangular of rectangulars"
+    ></svg-rect>
+    <svg-circle
+      [x]="rectangular.x - radiusCircle / 2"
+      [y]="rectangular.y - radiusCircle / 2"
+      [diameter]="radiusCircle"
+      *ngFor="let rectangular of rectangulars"
+    >
+    </svg-circle>
+    <svg-circle
+      [x]="rectangular.x + rectangular.width - radiusCircle / 2"
+      [y]="rectangular.y - radiusCircle / 2"
+      [diameter]="radiusCircle"
+      *ngFor="let rectangular of rectangulars"
+    >
+    </svg-circle>
+    <svg-circle
+      [x]="rectangular.x + rectangular.width - radiusCircle / 2"
+      [y]="rectangular.y + rectangular.height - radiusCircle / 2"
+      [diameter]="radiusCircle"
+      *ngFor="let rectangular of rectangulars"
+    >
+    </svg-circle>
+    <svg-circle
+      [x]="rectangular.x - radiusCircle / 2"
+      [y]="rectangular.y + rectangular.height - radiusCircle / 2"
+      [diameter]="radiusCircle"
+      *ngFor="let rectangular of rectangulars"
+    >
+    </svg-circle>
+  </svg-container>
 </div>
 <div class="right"></div>
 <div class="bottom"></div>
