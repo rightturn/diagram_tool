@@ -1,0 +1,10 @@
+.svg-hover-point {
+  background-color: black;
+  border: 1px solid #fff;
+  position: absolute;
+  border-radius: 50%;
+}
+
+.svg-container {
+  position: relative;
+}

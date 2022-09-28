@@ -1,9 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+rect {
+    stroke: rgb(0, 0, 0);
+}
 
-
-.rect_border{
-    stroke-width: 3 ;
-    stroke:#d81010;
+.active_rect {
+    stroke-dasharray: 2;
 }

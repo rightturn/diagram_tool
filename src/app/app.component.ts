@@ -1,6 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
-import { SvgRectDirective } from 'ngx-svg/src/app/modules/directives/svg-rect.directive';
-// import employeeData from '../assets/SampleData/employees.json';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +21,7 @@ export class AppComponent {
       {
         height: 100,
         width: 200,
-        color: 'rgba(125, 125, 32, 0.5)',
+        color: 'rgba(255,255,255)',
         x: 20,
         y: 30,
         rx: 0,
@@ -68,10 +66,36 @@ export class AppComponent {
     this.rectangulars.splice(index, 1);
   }
 
+  public containerClick(event: any) {
+    console.log(event);
+  }
 
-  public clickRect(event: MouseEvent, rect: Rectangular) {
+  public increaseWidth(event: Event) {
+    console.log("increase width");
+    if (this.activeShape) {
+      this.activeShape.id
+    }
+  }
 
-    this.toggleBoxActiveState(rect);
+  public increaseHeight(event: Event) {
+    console.log("increase Height");
+  }
+
+  public mouseDownRect(event: MouseEvent, rect: Rectangular) {
+
+    let element = (event.target as HTMLElement);
+
+    this.toggleBoxActiveState(rect, element);
+
+    this.updateBoxBoundary(rect);
+
+  }
+
+  public mouseUpRect(event: MouseEvent, rect: Rectangular) {
+
+    let element = (event.target as HTMLElement);
+
+    this.toggleBoxActiveState(rect, element);
 
     this.updateBoxBoundary(rect);
 
@@ -107,12 +131,14 @@ export class AppComponent {
     return 1;
   }
 
-  private toggleBoxActiveState(rect: Rectangular) {
+  private toggleBoxActiveState(rect: Rectangular, element: HTMLElement) {
 
     if (this.activeShape) {
       this.activeShape = undefined;
+      element.classList.remove("active_rect");
     } else {
       this.activeShape = rect;
+      element.classList.add("active_rect");
     }
 
   }
