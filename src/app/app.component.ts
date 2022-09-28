@@ -22,7 +22,7 @@ export class AppComponent {
       {
         height: 100,
         width: 200,
-        color: 'rgba(125, 125, 32, 0.5)',
+        color: 'rgba(255,255,255)',
         x: 20,
         y: 30,
         rx: 0,
@@ -65,10 +65,15 @@ export class AppComponent {
     this.rectangulars.splice(index, 1);
   }
 
+  public containerClick(event: any) {
+    console.log(event);
+  }
 
   public clickRect(event: MouseEvent, rect: Rectangular) {
 
-    this.toggleBoxActiveState(rect);
+    let element = (event.target as HTMLElement);
+
+    this.toggleBoxActiveState(rect, element);
 
     this.updateBoxBoundary(rect);
 
@@ -92,12 +97,14 @@ export class AppComponent {
     return 1;
   }
 
-  private toggleBoxActiveState(rect: Rectangular) {
+  private toggleBoxActiveState(rect: Rectangular, element: HTMLElement) {
 
     if (this.activeShape) {
       this.activeShape = undefined;
+      element.classList.remove("active_rect");
     } else {
       this.activeShape = rect;
+      element.classList.add("active_rect");
     }
 
   }
