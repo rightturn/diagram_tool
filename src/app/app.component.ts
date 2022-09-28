@@ -78,7 +78,17 @@ export class AppComponent {
     console.log("increase Height");
   }
 
-  public clickRect(event: MouseEvent, rect: Rectangular) {
+  public mouseDownRect(event: MouseEvent, rect: Rectangular) {
+
+    let element = (event.target as HTMLElement);
+
+    this.toggleBoxActiveState(rect, element);
+
+    this.updateBoxBoundary(rect);
+
+  }
+
+  public mouseUpRect(event: MouseEvent, rect: Rectangular) {
 
     let element = (event.target as HTMLElement);
 
