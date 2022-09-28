@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-// import employeeData from '../assets/SampleData/employees.json';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -67,6 +65,17 @@ export class AppComponent {
 
   public containerClick(event: any) {
     console.log(event);
+  }
+
+  public increaseWidth(event: Event) {
+    console.log("increase width");
+    if (this.activeShape) {
+      this.activeShape.id
+    }
+  }
+
+  public increaseHeight(event: Event) {
+    console.log("increase Height");
   }
 
   public clickRect(event: MouseEvent, rect: Rectangular) {
