@@ -13,7 +13,6 @@ export class AppComponent {
 
   public radiusCircle = 5;
 
-
   private activeShape?: Rectangular = undefined;
 
   constructor() {
@@ -49,36 +48,8 @@ export class AppComponent {
     });
   }
 
-  /**
-   * Retrieves the maximum height of all elements.
-   * @returns Height of the container.
-   */
-  getHeight(): number {
-    return 0;
-    // return Math.max.apply(Math, this.rectangulars.map(el => el.height + el.y)) + 20;
-  }
-
-  /**
-   * Removes specific rectangular element.
-   * @param index - Index of rectangular element, which needs to be removed.
-   */
-  removeRow(index: number) {
-    this.rectangulars.splice(index, 1);
-  }
-
   public containerClick(event: any) {
     console.log(event);
-  }
-
-  public increaseWidth(event: Event) {
-    console.log("increase width");
-    if (this.activeShape) {
-      this.activeShape.id
-    }
-  }
-
-  public increaseHeight(event: Event) {
-    console.log("increase Height");
   }
 
   public mouseDownRect(event: MouseEvent, rect: Rectangular) {
