@@ -5,13 +5,15 @@
     <svg-container containerId="svg-element" (mouseUpEvent)="mouseUpContainer($event)"
         (mouseOutEvent)="mouseOutContainer($event)" (clickEvent)="containerClick($event)"
         (mouseMoveEvent)="mouseMove($event)" [height]='800'>
-        <svg-rect (mouseDownEvent)="mouseDownRect($event,rectangular)" (mouseUpEvent)="mouseUpRect($event,rectangular)"
-            [height]="rectangular.height" [width]="rectangular.width" [color]="rectangular.color" [rx]="rectangular.rx"
-            [ry]="rectangular.ry" [x]="rectangular.x" [y]="rectangular.y" *ngFor="let rectangular of rectangulars">
+        <svg-rect (mouseDownEvent)="rectangle.mouseDownRect($event,rectangular)"
+            (mouseUpEvent)="rectangle.mouseUpRect($event,rectangular)" [height]="rectangular.height"
+            [width]="rectangular.width" [color]="rectangular.color" [rx]="rectangular.rx" [ry]="rectangular.ry"
+            [x]="rectangular.x" [y]="rectangular.y" *ngFor="let rectangular of rectangulars">
         </svg-rect>
-        <svg-circle (mouseUpEvent)="mouseUpResizePoint($event,point)"
-            (mouseDownEvent)="mouseDownResizePoint($event,point)" [x]="point.x" [y]="point.y" [color]='"#29b6f2"'
-            [diameter]="radiusCircle * 2" *ngFor="let point of points"></svg-circle>
+        <svg-circle (mouseUpEvent)="rectangle.mouseUpResizePoint($event,point)"
+            (mouseDownEvent)="rectangle.mouseDownResizePoint($event,point)" [x]="point.x" [y]="point.y"
+            [color]='"#29b6f2"' [diameter]="rectangle.radiusCircle * 2" *ngFor="let point of rectangle.points">
+        </svg-circle>
 
     </svg-container>
 </div>
