@@ -54,6 +54,7 @@ export class SvgContainerComponent implements AfterViewInit, OnChanges {
     = new EventEmitter(); // Event handler for retrieving coordinates at position where you double-click.
   @Output() public mouseOverEvent: EventEmitter<MouseEvent> = new EventEmitter(); // Event handler when mouse is moved over the container.
   @Output() public mouseOutEvent: EventEmitter<MouseEvent> = new EventEmitter(); // Event handler when the mouse exits the container.
+  @Output() public mouseUpEvent: EventEmitter<Event> = new EventEmitter(); // Event handler when the mouse exits the container.
   @Output() public mouseMoveEvent: EventEmitter<{ x: number, y: number }> = new EventEmitter();
   // Event handler when the mouse is being moved on the container.
   @Output() public onInitialize: EventEmitter<Container> = new EventEmitter();
@@ -247,6 +248,7 @@ export class SvgContainerComponent implements AfterViewInit, OnChanges {
 
     // Let's output the svg container element
     this.onInitialize.emit(this._svg);
+    this._svg.on('mouseup', (evt: Event) => this.mouseUpEvent.emit(evt)); // Assign mouse down event
   }
 
   /**
