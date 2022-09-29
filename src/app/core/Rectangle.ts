@@ -1,7 +1,6 @@
 
 export class Rectangle {
 
-    public points: ResizeablePoint[] = [];
 
     public radiusCircle = 5;
 
@@ -207,24 +206,6 @@ export interface Rectangular {
     ry: number;
     id: number;
 }
-
-interface ResizeablePoint {
-    x: number;
-    y: number;
-    label: ResizeablePointLabel;
-}
-
-interface BoxBoundaryCordinates {
-    left_x: number;
-    right_x: number;
-    top_y: number;
-    bottom_y: number;
-}
-
-enum ResizeablePointLabel {
-    TOP = "top", BOTTOM = "bottom", LEFT = "left", RIGHT = "right"
-}
-
 export interface Point {
     x: number;
     y: number;

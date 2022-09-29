@@ -16,7 +16,6 @@ export class AppComponent {
     this.rectangulars = this.rectangle.rectangulars;
   }
 
-
   public containerClick(event: any) {
     console.log(event);
   }
@@ -30,16 +29,13 @@ export class AppComponent {
   }
 
   public mouseUpContainer(event: Event) {
-    console.log("mouse up container");
     this.rectangle.deactivate();
   }
 
 
   public mouseOutContainer(event: MouseEvent) {
     this.rectangle.deactivate();
-    console.log("mouse out container");
   }
-
 
 }
 
