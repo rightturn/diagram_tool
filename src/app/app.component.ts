@@ -60,6 +60,8 @@ export class AppComponent {
 
     this.updateBoxBoundary(rect);
 
+    event.preventDefault();
+
   }
 
   public mouseUpRect(event: MouseEvent, rect: Rectangular) {
@@ -70,15 +72,17 @@ export class AppComponent {
 
     this.updateBoxBoundary(rect);
 
+    event.preventDefault();
+
   }
 
-  public mouseOutRect(event: MouseEvent){
+  public mouseOutRect(event: MouseEvent) {
     console.log("mouseOutRect");
     let t: HTMLElement = (event.target as HTMLElement);
     t.classList.remove("rect_border")
   }
 
-  public mouseOverRect(event: MouseEvent){
+  public mouseOverRect(event: MouseEvent) {
     console.log("mouseOverRect");
     let t: HTMLElement = (event.target as HTMLElement);
     t.classList.add("rect_border")
@@ -92,6 +96,10 @@ export class AppComponent {
       this.updateBoxBoundary(this.activeShape);
     }
 
+  }
+
+  public mouseOutContainer(event: MouseEvent) {
+    this.activeShape = undefined;
   }
 
   private getNextIdForRectangle(): number {
