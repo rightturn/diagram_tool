@@ -10,9 +10,9 @@
             [width]="rectangular.width" [color]="rectangular.color" [rx]="rectangular.rx" [ry]="rectangular.ry"
             [x]="rectangular.x" [y]="rectangular.y" *ngFor="let rectangular of rectangulars">
         </svg-rect>
-        <svg-circle (mouseUpEvent)="rectangle.mouseUpResizePoint($event,point)"
-            (mouseDownEvent)="rectangle.mouseDownResizePoint($event,point)" [x]="point.x" [y]="point.y"
-            [color]='"#29b6f2"' [diameter]="rectangle.radiusCircle * 2" *ngFor="let point of rectangle.points">
+        <svg-circle (mouseUpEvent)="resizingPoints.mouseUpResizePoint($event,point)"
+            (mouseDownEvent)="resizingPoints.mouseDownResizePoint($event,point)" [x]="point.x" [y]="point.y"
+            [color]='"#29b6f2"' [diameter]="resizingPoints.radiusCircle * 2" *ngFor="let point of resizingPoints.points">
         </svg-circle>
 
     </svg-container>

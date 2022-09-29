@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Point, Rectangle, Rectangular } from './core/Rectangle';
+import { ResizingPoint } from './core/ResizingPoint';
 
 @Component({
   selector: 'app-root',
@@ -9,10 +10,12 @@ import { Point, Rectangle, Rectangular } from './core/Rectangle';
 export class AppComponent {
 
   public rectangle: Rectangle;
+  public resizingPoints: ResizingPoint;
   public rectangulars: Rectangular[] = [];
 
   constructor() {
-    this.rectangle = new Rectangle();
+    this.resizingPoints = new ResizingPoint();
+    this.rectangle = new Rectangle(this.resizingPoints);
     this.rectangulars = this.rectangle.rectangulars;
   }
 
@@ -21,17 +24,12 @@ export class AppComponent {
   }
 
   public mouseMove(event: Point) {
-
     this.rectangle.updateMovement(event);
-
-    this.rectangle.updateResize(event);
-
   }
 
   public mouseUpContainer(event: Event) {
     this.rectangle.deactivate();
   }
-
 
   public mouseOutContainer(event: MouseEvent) {
     this.rectangle.deactivate();
