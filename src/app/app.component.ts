@@ -55,7 +55,7 @@ export class AppComponent {
     console.log(event);
   }
 
-  public mouseDownRect(event: MouseEvent, rect: Rectangular) {
+  public mouseDownRect(event: Event, rect: Rectangular) {
 
     let element = (event.target as HTMLElement);
 
@@ -69,7 +69,7 @@ export class AppComponent {
 
   }
 
-  public mouseUpRect(event: MouseEvent, rect: Rectangular) {
+  public mouseUpRect(event: Event, rect: Rectangular) {
 
     let element = (event.target as HTMLElement);
 
