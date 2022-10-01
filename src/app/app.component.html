@@ -1,18 +1,21 @@
 <div class="top">
 </div>
-<div class="left"></div>
+<div class="left">
+    <button (click)="addBox($event)">Add Box</button>
+</div>
 <div class="center">
     <svg-container containerId="svg-element" (mouseUpEvent)="mouseUpContainer($event)"
-        (mouseOutEvent)="mouseOutContainer($event)" (clickEvent)="containerClick($event)"
+        (mouseOutEvent)="mouseOutContainer($event)" (mouseClickEvent)="containerClick($event)"
         (mouseMoveEvent)="mouseMove($event)" [height]='800'>
         <svg-rect (mouseDownEvent)="rectangle.mouseDownRect($event,rectangular)"
-            (mouseUpEvent)="rectangle.mouseUpRect($event,rectangular)" [height]="rectangular.height"
-            [width]="rectangular.width" [color]="rectangular.color" [rx]="rectangular.rx" [ry]="rectangular.ry"
-            [x]="rectangular.x" [y]="rectangular.y" *ngFor="let rectangular of rectangulars">
+            (clickEvent)="rectangle.clickRect($event)" (mouseUpEvent)="rectangle.mouseUpRect($event,rectangular)"
+            [height]="rectangular.height" [width]="rectangular.width" [color]="rectangular.color" [rx]="rectangular.rx"
+            [ry]="rectangular.ry" [x]="rectangular.x" [y]="rectangular.y" *ngFor="let rectangular of rectangulars">
         </svg-rect>
         <svg-circle (mouseUpEvent)="resizingPoints.mouseUpResizePoint($event,point)"
             (mouseDownEvent)="resizingPoints.mouseDownResizePoint($event,point)" [x]="point.x" [y]="point.y"
-            [color]='"#29b6f2"' [diameter]="resizingPoints.radiusCircle * 2" *ngFor="let point of resizingPoints.points">
+            [color]='"#29b6f2"' [diameter]="resizingPoints.radiusCircle * 2"
+            *ngFor="let point of resizingPoints.points">
         </svg-circle>
 
     </svg-container>

@@ -19,8 +19,12 @@ export class AppComponent {
     this.rectangulars = this.rectangle.rectangulars;
   }
 
-  public containerClick(event: any) {
-    console.log(event);
+  public addBox(event: Event) {
+    this.rectangle.add();
+  }
+
+  public containerClick(event: Event) {
+    this.rectangle.inactive();
   }
 
   public mouseMove(event: Point) {
@@ -28,11 +32,11 @@ export class AppComponent {
   }
 
   public mouseUpContainer(event: Event) {
-    this.rectangle.deactivate();
+    this.rectangle.deactivateMovement();
   }
 
   public mouseOutContainer(event: MouseEvent) {
-    this.rectangle.deactivate();
+    this.rectangle.inactive();
   }
 
 }

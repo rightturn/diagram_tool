@@ -25,6 +25,23 @@ export class Rectangle {
 
     }
 
+    public add() {
+
+        this.rectangulars.push(
+            {
+                height: 100,
+                width: 100,
+                color: 'rgba(255,255,255)',
+                x: 100,
+                y: 100,
+                rx: 0,
+                ry: 0,
+                id: this.getNextIdForRectangle()
+            }
+        );
+
+    }
+
     public mouseDownRect(event: Event, rect: Rectangular) {
 
         let element = (event.target as HTMLElement);
@@ -65,18 +82,30 @@ export class Rectangle {
 
 
     public updateMovement(cords: Point) {
+
         if (this.moveableShape) {
             this.moveableShape.x = cords.x - this.moveableShape.width / 2;
             this.moveableShape.y = cords.y - this.moveableShape.height / 2;
             this.resizingPoints.updateBoxBoundary(this.moveableShape);
         }
 
-        this.resizingPoints.updateResize(cords,this.focusedShape!);
+        this.resizingPoints.updateResize(cords, this.focusedShape!);
     }
 
-    public deactivate() {
+    public deactivateMovement() {
         this.moveableShape = undefined;
         this.resizingPoints.deactivate();
+    }
+
+    public clickRect(event: Event) {
+        event.stopPropagation();
+        event.preventDefault();
+    }
+
+    public inactive() {
+        this.focusedShape = undefined;
+        this.deactivateMovement();
+        this.resizingPoints.inactive();
     }
 
     private getNextIdForRectangle(): number {
