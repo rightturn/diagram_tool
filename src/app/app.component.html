@@ -23,11 +23,18 @@
 <div class="right">
     <div class="color_palette">
         <div class="left_arrow">
+            <fa-icon [icon]="faAngleLeft"></fa-icon>
         </div>
         <div class="palettes">
             <div class="color" [style.background]="color" *ngFor="let color of colors"></div>
         </div>
-        <div class="right_arrow"></div>
+        <div class="right_arrow">
+            <fa-icon [icon]="faAngleRight"></fa-icon>
+        </div>
+    </div>
+    <div class="color_switcher">
+        <div class="switch switch_1"></div>
+        <div class="switch switch_2"></div>
     </div>
 
 </div>

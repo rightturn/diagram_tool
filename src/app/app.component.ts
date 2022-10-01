@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { faCoffee, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { Point, Rectangle, Rectangular } from './core/Rectangle';
 import { ResizingPoint } from './core/ResizingPoint';
 
@@ -12,6 +13,9 @@ export class AppComponent {
   public rectangle: Rectangle;
   public resizingPoints: ResizingPoint;
   public rectangulars: Rectangular[] = [];
+
+  faAngleLeft = faAngleLeft;
+  faAngleRight = faAngleRight;
 
   public colors: String[] = [];
 
