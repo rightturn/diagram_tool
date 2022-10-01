@@ -17,7 +17,9 @@ export class AppComponent {
   faAngleLeft = faAngleLeft;
   faAngleRight = faAngleRight;
 
-  public colors: String[] = [];
+  public active_colors_index = 0;
+  public all_colors: String[][] = [];
+  public active_colors:String[] = [];
 
   constructor() {
     this.resizingPoints = new ResizingPoint();
@@ -25,7 +27,14 @@ export class AppComponent {
     this.rectangulars = this.rectangle.rectangulars;
 
 
-    this.colors = ["#ffa347", "#ff4b47", "#ff4b92", "#ff4b1a", "#2c4b1a", "#f1173a", "#21463a", "#2146b6"];
+    this.all_colors = [["#ffa347", "#ff4b47", "#ff4b92", "#ff4b1a", "#2c4b1a", "#f1173a", "#21463a", "#2146b6"],
+    ["#FFA07A","#B22222","#FFA500","#BDB76B","#228B22","#3CB371","#48D1CC","#008B8B"]];
+    this.active_colors = this.all_colors[this.active_colors_index];
+  }
+
+  public switchColors(index:number){
+    this.active_colors_index = index;
+    this.active_colors = this.all_colors[this.active_colors_index];
   }
 
   public addBox(event: Event) {
