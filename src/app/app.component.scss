@@ -107,12 +107,13 @@ svg{
             height: 10px;
             border-radius: 50%;
             background-color: lightblue;
+            background-color: white;
             border:1px solid gray;
             margin:5px;
         }
 
-        .switch_2{
-            background-color: white;
+        .active_switch{
+            background-color: lightblue;
         }
     }
 }
