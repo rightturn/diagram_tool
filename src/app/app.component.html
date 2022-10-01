@@ -20,5 +20,15 @@
 
     </svg-container>
 </div>
-<div class="right"></div>
+<div class="right">
+    <div class="color_palette">
+        <div class="left_arrow">
+        </div>
+        <div class="palettes">
+            <div class="color" [style.background]="color" *ngFor="let color of colors"></div>
+        </div>
+        <div class="right_arrow"></div>
+    </div>
+
+</div>
 <div class="bottom"></div>

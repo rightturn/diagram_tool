@@ -54,12 +54,44 @@ svg{
 }
 
 .right{
-    background: greenyellow;
+    background: #fbfbfb;
     position: absolute;
     top: $top-bar;
     right: 0;
     bottom: $bottom-bar;
-    width: $right-sidebar
+    width: $right-sidebar;
+
+    .color_palette{
+        display: flex;
+        flex-direction: row;
+        padding:5px;
+
+        .left_arrow{
+            flex-grow: 2;
+            border:1px solid black;
+        }
+
+        .palettes{
+            flex-grow: 8;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            height: 80px;
+            align-items: center;
+
+            .color{
+                border:1px solid black;
+                height: 30px;
+                width: 50px;
+            }
+        }
+
+        .right_arrow{
+            flex-grow: 2;
+            border:1px solid black;
+        }
+
+    }
 }
 
 .bottom{

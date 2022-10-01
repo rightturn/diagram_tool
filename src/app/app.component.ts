@@ -13,10 +13,15 @@ export class AppComponent {
   public resizingPoints: ResizingPoint;
   public rectangulars: Rectangular[] = [];
 
+  public colors: String[] = [];
+
   constructor() {
     this.resizingPoints = new ResizingPoint();
     this.rectangle = new Rectangle(this.resizingPoints);
     this.rectangulars = this.rectangle.rectangulars;
+
+
+    this.colors = ["#ffa347", "#ff4b47", "#ff4b92", "#ff4b1a", "#2c4b1a", "#f1173a", "#21463a", "#2146b6"];
   }
 
   public addBox(event: Event) {
