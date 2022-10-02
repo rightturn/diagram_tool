@@ -4,7 +4,7 @@
     <button (click)="addBox($event)">Add Box</button>
 </div>
 <div class="center">
-    <svg-container containerId="svg-element" (mouseUpEvent)="mouseUpContainer($event)"
+    <svg-container containerId="svg-element" (mouseDownEvent)="mouseDownContainer($event)" (mouseUpEvent)="mouseUpContainer($event)"
         (mouseOutEvent)="mouseOutContainer($event)" (mouseClickEvent)="containerClick($event)"
         (mouseMoveEvent)="mouseMove($event)" [height]='800'>
         <svg-rect (mouseDownEvent)="rectangle.mouseDownRect($event,rectangular)"

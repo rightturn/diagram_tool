@@ -14,6 +14,7 @@ export class AppComponent {
   public resizingPoints: ResizingPoint;
   public rectangulars: Rectangular[] = [];
 
+
   faAngleLeft = faAngleLeft;
   faAngleRight = faAngleRight;
 
@@ -51,6 +52,14 @@ export class AppComponent {
 
   public mouseUpContainer(event: Event) {
     this.rectangle.deactivateMovement();
+  }
+
+  public mouseDownContainer(event: MouseEvent) {
+    // console.log("MouseDownEventContainer");
+    // console.log(event.offsetX);
+    // console.log(event.offsetY);
+    let location:Point = {x:event.offsetX,y:event.offsetY};
+    this.rectangle.setContainerMouseDownPoint(location);
   }
 
   public mouseOutContainer(event: MouseEvent) {
