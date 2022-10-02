@@ -29,6 +29,12 @@ export class Rectangle {
 
     }
 
+    public setFillColor(color:string){
+        if(this.focusedShape){
+            this.focusedShape.color = color;
+        }
+    }
+
     public setContainerMouseDownPoint(location:Point){
         this.containerMouseDownPoint = location;
     }
@@ -100,8 +106,17 @@ export class Rectangle {
             let x_difference = new_location.x - old_location!.x;
             let y_difference = new_location.y - old_location!.y;
 
-            this.moveableShape.x = this.initialLocation!.x + x_difference
-            this.moveableShape.y = this.initialLocation!.y + y_difference
+            let new_x = this.initialLocation!.x + x_difference;
+            let new_y = this.initialLocation!.y + y_difference;
+
+            if(new_x >=0){
+                this.moveableShape.x = new_x;
+            }
+
+            if(new_y >=0 ){
+                this.moveableShape.y = new_y;
+            }
+
             this.resizingPoints.updateBoxBoundary(this.moveableShape);
         }
 
