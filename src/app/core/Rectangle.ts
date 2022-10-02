@@ -5,6 +5,10 @@ export class Rectangle {
     private moveableShape?: Rectangular = undefined;
     private focusedShape?: Rectangular = undefined;
     private resizingPoints: ResizingPoint;
+
+    private containerMouseDownPoint?:Point = undefined;
+    private initialLocation?:Point = undefined;
+
     public rectangulars: Rectangular[] = [];
 
     constructor(resizingPoints: ResizingPoint) {
@@ -23,6 +27,10 @@ export class Rectangle {
 
         this.resizingPoints = resizingPoints;
 
+    }
+
+    public setContainerMouseDownPoint(location:Point){
+        this.containerMouseDownPoint = location;
     }
 
     public add() {
@@ -51,6 +59,9 @@ export class Rectangle {
         this.toggleBoxActiveState(rect, element);
 
         this.resizingPoints.updateBoxBoundary(rect);
+
+        this.initialLocation = {x:this.focusedShape.x,y:this.focusedShape.y};
+        console.log("mouse down rect");
 
         event.preventDefault();
 
@@ -81,15 +92,20 @@ export class Rectangle {
     }
 
 
-    public updateMovement(cords: Point) {
+    public updateMovement(new_location: Point) {
 
         if (this.moveableShape) {
-            this.moveableShape.x = cords.x - this.moveableShape.width / 2;
-            this.moveableShape.y = cords.y - this.moveableShape.height / 2;
+            let old_location = this.containerMouseDownPoint;
+
+            let x_difference = new_location.x - old_location!.x;
+            let y_difference = new_location.y - old_location!.y;
+
+            this.moveableShape.x = this.initialLocation!.x + x_difference
+            this.moveableShape.y = this.initialLocation!.y + y_difference
             this.resizingPoints.updateBoxBoundary(this.moveableShape);
         }
 
-        this.resizingPoints.updateResize(cords, this.focusedShape!);
+        this.resizingPoints.updateResize(new_location, this.focusedShape!);
     }
 
     public deactivateMovement() {
