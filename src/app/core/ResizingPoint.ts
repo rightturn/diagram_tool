@@ -55,13 +55,16 @@ export class ResizingPoint {
     }
 
     private resizeFromTop(cords: Point, focusedShape: Rectangular) {
-        let old_y = focusedShape.y;
-        focusedShape.y = cords.y;
-        if (cords.y > old_y) {
-            focusedShape.height -= cords.y - old_y;
-        } else {
-            focusedShape.height += old_y - cords.y;
-        }
+            let old_y = focusedShape.y;
+            if (cords.y > old_y ) {
+                if(focusedShape.height >= this.radiusCircle * 2){
+                    focusedShape.height -= cords.y - old_y;
+                    focusedShape.y = cords.y;
+                }
+            } else {
+                focusedShape.height += old_y - cords.y;
+                focusedShape.y = cords.y;
+            }
     }
 
     private resizeFromBottom(cords: Point, focusedShape: Rectangular) {
@@ -71,11 +74,14 @@ export class ResizingPoint {
 
     private resizeFromLeft(cords: Point, focusedShape: Rectangular) {
         let old_x = focusedShape.x;
-        focusedShape.x = cords.x;
         if (cords.x > old_x) {
-            focusedShape.width -= cords.x - old_x;
+            if(focusedShape.width >= this.radiusCircle * 2){
+                focusedShape.width -= cords.x - old_x;
+                focusedShape.x = cords.x;
+            }
         } else {
             focusedShape.width += old_x - cords.x;
+            focusedShape.x = cords.x;
         }
     }
 
