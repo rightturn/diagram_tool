@@ -22,6 +22,13 @@ export class AppComponent {
   public all_colors: string[][] = [];
   public active_colors:string[] = [];
 
+
+  public line_x0 = 5;
+  public line_y0 = 5;
+  public line_x1 = 200;
+  public line_y1 = 200;
+  public line_border_size = 3;
+
   constructor() {
     this.resizingPoints = new ResizingPoint();
     this.rectangle = new Rectangle(this.resizingPoints);
