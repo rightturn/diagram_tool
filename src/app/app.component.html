@@ -10,14 +10,14 @@
         <svg-rect (mouseDownEvent)="rectangle.mouseDownRect($event,rectangular)"
             (clickEvent)="rectangle.clickRect($event)" (mouseUpEvent)="rectangle.mouseUpRect($event,rectangular)"
             [height]="rectangular.height" [width]="rectangular.width" [color]="rectangular.color" [rx]="rectangular.rx"
-            [ry]="rectangular.ry" [x]="rectangular.x" [y]="rectangular.y" *ngFor="let rectangular of rectangulars">
+            [ry]="rectangular.ry" [x]="rectangular.x" [y]="rectangular.y" *ngFor="let rectangular of rectangle.rectangulars">
         </svg-rect>
         <svg-circle (mouseUpEvent)="resizingPoints.mouseUpResizePoint($event,point)"
             (mouseDownEvent)="resizingPoints.mouseDownResizePoint($event,point)" [x]="point.x" [y]="point.y"
             [color]='"#29b6f2"' [diameter]="resizingPoints.radiusCircle * 2"
             *ngFor="let point of resizingPoints.points">
         </svg-circle>
-          <svg-line [x0]="line_x0" [x1]="line_x1" [y0]="line_y0" [y1]="line_y1" [borderSize]="line_border_size" > </svg-line>
+          <svg-line [x0]="l.x0" [x1]="l.x1" [y0]="l.y0" [y1]="l.y1" [borderSize]="line.line_border_size" *ngFor="let l of line.lines"> </svg-line>
     </svg-container>
 </div>
 <div class="right">

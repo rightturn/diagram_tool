@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { faCoffee, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { Line } from './core/Line';
 import { Point, Rectangle, Rectangular } from './core/Rectangle';
 import { ResizingPoint } from './core/ResizingPoint';
 
@@ -12,7 +13,8 @@ export class AppComponent {
 
   public rectangle: Rectangle;
   public resizingPoints: ResizingPoint;
-  public rectangulars: Rectangular[] = [];
+  public line:Line;
+  // public rectangulars: Rectangular[] = [];
 
 
   faAngleLeft = faAngleLeft;
@@ -22,17 +24,11 @@ export class AppComponent {
   public all_colors: string[][] = [];
   public active_colors:string[] = [];
 
-
-  public line_x0 = 5;
-  public line_y0 = 5;
-  public line_x1 = 200;
-  public line_y1 = 200;
-  public line_border_size = 3;
-
   constructor() {
+    this.line = new Line();
     this.resizingPoints = new ResizingPoint();
     this.rectangle = new Rectangle(this.resizingPoints);
-    this.rectangulars = this.rectangle.rectangulars;
+    // this.rectangulars = this.rectangle.rectangulars;
 
 
     this.all_colors = [["#ffa347", "#ff4b47", "#ff4b92", "#ff4b1a", "#2c4b1a", "#f1173a", "#21463a", "#2146b6"],
