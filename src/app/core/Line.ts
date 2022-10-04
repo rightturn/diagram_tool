@@ -8,6 +8,7 @@ export class Line {
     public points: PositionPoint[] = [];
     public diameterCircle = 10;
 
+    private activePoint?: PositionPoint;
     private activeLine?: SimpleLine;
 
     constructor() {
@@ -30,6 +31,18 @@ export class Line {
         console.log(this.points);
     }
 
+    mouseUp(event: Event) {
+        console.log("mouse up from line");
+        this.activePoint = undefined;
+    }
+
+    mouseDown(event: Event, l_point: PositionPoint) {
+        console.log("mouse down from line");
+        this.activePoint = l_point;
+    }
+
+
+
     private setPositionPoint() {
 
         let start_x = this.activeLine!.x0 - this.diameterCircle / 2;
@@ -42,6 +55,18 @@ export class Line {
         this.points = [];
         this.points.push(start_point)
         this.points.push(end_point)
+    }
+
+    public updatePosition(cords: PositionPoint) {
+        if (this.activePoint) {
+            this.activePoint.x = cords.x - this.diameterCircle / 2;
+            this.activePoint.y = cords.y - this.diameterCircle / 2;
+
+            this.activeLine!.x0 = this.points[0].x + this.diameterCircle / 2;
+            this.activeLine!.y0 = this.points[0].y + this.diameterCircle / 2;
+            this.activeLine!.x1 = this.points[1].x + this.diameterCircle / 2;
+            this.activeLine!.y1 = this.points[1].y + this.diameterCircle / 2;
+        }
     }
 
 }
