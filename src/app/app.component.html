@@ -4,20 +4,25 @@
     <button (click)="addBox($event)">Add Box</button>
 </div>
 <div class="center">
-    <svg-container containerId="svg-element" (mouseDownEvent)="mouseDownContainer($event)" (mouseUpEvent)="mouseUpContainer($event)"
-        (mouseOutEvent)="mouseOutContainer($event)" (mouseClickEvent)="containerClick($event)"
-        (mouseMoveEvent)="mouseMove($event)" [height]='800'>
+    <svg-container containerId="svg-element" (mouseDownEvent)="mouseDownContainer($event)"
+        (mouseUpEvent)="mouseUpContainer($event)" (mouseOutEvent)="mouseOutContainer($event)"
+        (mouseClickEvent)="containerClick($event)" (mouseMoveEvent)="mouseMove($event)" [height]='800'>
         <svg-rect (mouseDownEvent)="rectangle.mouseDownRect($event,rectangular)"
             (clickEvent)="rectangle.clickRect($event)" (mouseUpEvent)="rectangle.mouseUpRect($event,rectangular)"
             [height]="rectangular.height" [width]="rectangular.width" [color]="rectangular.color" [rx]="rectangular.rx"
-            [ry]="rectangular.ry" [x]="rectangular.x" [y]="rectangular.y" *ngFor="let rectangular of rectangle.rectangulars">
+            [ry]="rectangular.ry" [x]="rectangular.x" [y]="rectangular.y"
+            *ngFor="let rectangular of rectangle.rectangulars">
         </svg-rect>
         <svg-circle (mouseUpEvent)="resizingPoints.mouseUpResizePoint($event,point)"
             (mouseDownEvent)="resizingPoints.mouseDownResizePoint($event,point)" [x]="point.x" [y]="point.y"
             [color]='"#29b6f2"' [diameter]="resizingPoints.radiusCircle * 2"
             *ngFor="let point of resizingPoints.points">
         </svg-circle>
-          <svg-line [x0]="l.x0" [x1]="l.x1" [y0]="l.y0" [y1]="l.y1" [borderSize]="line.line_border_size" *ngFor="let l of line.lines"> </svg-line>
+        <svg-line [x0]="l.x0" [x1]="l.x1" [y0]="l.y0" (clickEvent)="line.click($event,l)" [y1]="l.y1"
+            [borderSize]="line.line_border_size" *ngFor="let l of line.lines"> </svg-line>
+        <svg-circle [x]="l_point.x" [y]="l_point.y" [diameter]="line.diameterCircle" [color]='"#29b6f2"'
+            *ngFor="let l_point of line.points">
+        </svg-circle>
     </svg-container>
 </div>
 <div class="right">
@@ -26,7 +31,8 @@
             <fa-icon [icon]="faAngleLeft" (click)="switchColors(0)"></fa-icon>
         </div>
         <div class="palettes">
-            <div class="color" [style.background]="color" (click)="fillColor(color)" *ngFor="let color of active_colors"></div>
+            <div class="color" [style.background]="color" (click)="fillColor(color)"
+                *ngFor="let color of active_colors"></div>
         </div>
         <div class="right_arrow">
             <fa-icon [icon]="faAngleRight" (click)="switchColors(1)"></fa-icon>
