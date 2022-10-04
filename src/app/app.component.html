@@ -20,7 +20,8 @@
         </svg-circle>
         <svg-line [x0]="l.x0" [x1]="l.x1" [y0]="l.y0" (clickEvent)="line.click($event,l)" [y1]="l.y1"
             [borderSize]="line.line_border_size" *ngFor="let l of line.lines"> </svg-line>
-        <svg-circle [x]="l_point.x" [y]="l_point.y" [diameter]="line.diameterCircle" [color]='"#29b6f2"'
+        <svg-circle [x]="l_point.x" [y]="l_point.y" [diameter]="line.diameterCircle"
+            (mouseDownEvent)="line.mouseDown($event,l_point)" (mouseUpEvent)="line.mouseUp($event)" [color]='"#29b6f2"'
             *ngFor="let l_point of line.points">
         </svg-circle>
     </svg-container>
