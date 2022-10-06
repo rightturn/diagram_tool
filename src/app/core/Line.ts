@@ -7,6 +7,7 @@ export class Line {
 
     public points: PositionPoint[] = [];
     public diameterCircle = 10;
+    public classes: string[] = [];
 
     private activePoint?: PositionPoint;
     private activeLine?: SimpleLine;
@@ -21,6 +22,8 @@ export class Line {
                 y1: 400
             }
         ];
+
+        this.classes = ['moveable']
 
     }
 
