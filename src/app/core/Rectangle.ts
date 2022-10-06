@@ -6,10 +6,15 @@ export class Rectangle {
     private focusedShape?: Rectangular = undefined;
     private resizingPoints: ResizingPoint;
 
-    private containerMouseDownPoint?:Point = undefined;
-    private initialLocation?:Point = undefined;
+    private containerMouseDownPoint?: Point = undefined;
+    private initialLocation?: Point = undefined;
 
     public rectangulars: Rectangular[] = [];
+    public classes: string[] = [];
+
+    public position_indicator = false;
+    public top = '50px';
+    public left = '50px';
 
     constructor(resizingPoints: ResizingPoint) {
         this.rectangulars.push(
@@ -26,16 +31,17 @@ export class Rectangle {
         );
 
         this.resizingPoints = resizingPoints;
+        this.classes = ['moveable']
 
     }
 
-    public setFillColor(color:string){
-        if(this.focusedShape){
+    public setFillColor(color: string) {
+        if (this.focusedShape) {
             this.focusedShape.color = color;
         }
     }
 
-    public setContainerMouseDownPoint(location:Point){
+    public setContainerMouseDownPoint(location: Point) {
         this.containerMouseDownPoint = location;
     }
 
@@ -58,6 +64,12 @@ export class Rectangle {
 
     public mouseDownRect(event: Event, rect: Rectangular) {
 
+        // console.log(event);
+        // let e = (event as MouseEvent);
+        // this.top = (e.offsetY + 100) + "px";
+        // this.left = e.offsetX + "px";
+        this.position_indicator = true;
+
         let element = (event.target as HTMLElement);
 
         this.focusedShape = rect;
@@ -66,7 +78,7 @@ export class Rectangle {
 
         this.resizingPoints.updateBoxBoundary(rect);
 
-        this.initialLocation = {x:this.focusedShape.x,y:this.focusedShape.y};
+        this.initialLocation = { x: this.focusedShape.x, y: this.focusedShape.y };
         console.log("mouse down rect");
 
         event.preventDefault();
@@ -101,6 +113,9 @@ export class Rectangle {
     public updateMovement(new_location: Point) {
 
         if (this.moveableShape) {
+
+            this.updateIndicatorPosition(new_location);
+
             let old_location = this.containerMouseDownPoint;
 
             let x_difference = new_location.x - old_location!.x;
@@ -109,11 +124,11 @@ export class Rectangle {
             let new_x = this.initialLocation!.x + x_difference;
             let new_y = this.initialLocation!.y + y_difference;
 
-            if(new_x >=0){
+            if (new_x >= 0) {
                 this.moveableShape.x = new_x;
             }
 
-            if(new_y >=0 ){
+            if (new_y >= 0) {
                 this.moveableShape.y = new_y;
             }
 
@@ -121,6 +136,15 @@ export class Rectangle {
         }
 
         this.resizingPoints.updateResize(new_location, this.focusedShape!);
+    }
+
+    private updateIndicatorPosition(cord: Point) {
+
+        if (this.position_indicator == true) {
+            this.top = (cord.y + 100) + "px";
+            this.left = cord.x + "px";
+        }
+
     }
 
     public deactivateMovement() {

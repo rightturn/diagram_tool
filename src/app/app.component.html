@@ -4,10 +4,14 @@
     <button (click)="addBox($event)">Add Box</button>
 </div>
 <div class="center">
+    <div class="position_indicator" [style.top]="rectangle.top" [style.left]="rectangle.left">
+        100,100
+    </div>
     <svg-container containerId="svg-element" (mouseDownEvent)="mouseDownContainer($event)"
         (mouseUpEvent)="mouseUpContainer($event)" (mouseOutEvent)="mouseOutContainer($event)"
         (mouseClickEvent)="containerClick($event)" (mouseMoveEvent)="mouseMove($event)" [height]='800'>
-        <svg-rect (mouseDownEvent)="rectangle.mouseDownRect($event,rectangular)"
+
+        <svg-rect [classes]="rectangle.classes" (mouseDownEvent)="rectangle.mouseDownRect($event,rectangular)"
             (clickEvent)="rectangle.clickRect($event)" (mouseUpEvent)="rectangle.mouseUpRect($event,rectangular)"
             [height]="rectangular.height" [width]="rectangular.width" [color]="rectangular.color" [rx]="rectangular.rx"
             [ry]="rectangular.ry" [x]="rectangular.x" [y]="rectangular.y"
@@ -18,12 +22,14 @@
             [color]='"#29b6f2"' [diameter]="resizingPoints.radiusCircle * 2"
             *ngFor="let point of resizingPoints.points">
         </svg-circle>
-        <svg-line [x0]="l.x0" [x1]="l.x1" [y0]="l.y0" (clickEvent)="line.click($event,l)" [y1]="l.y1"
-            [borderSize]="line.line_border_size" *ngFor="let l of line.lines"> </svg-line>
+
+        <svg-line [classes]="line.classes" [x0]="l.x0" [x1]="l.x1" [y0]="l.y0" (clickEvent)="line.click($event,l)"
+            [y1]="l.y1" [borderSize]="line.line_border_size" *ngFor="let l of line.lines"> </svg-line>
         <svg-circle [x]="l_point.x" [y]="l_point.y" [diameter]="line.diameterCircle"
             (mouseDownEvent)="line.mouseDown($event,l_point)" (mouseUpEvent)="line.mouseUp($event)" [color]='"#29b6f2"'
             *ngFor="let l_point of line.points">
         </svg-circle>
+
     </svg-container>
 </div>
 <div class="right">
