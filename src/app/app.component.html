@@ -4,8 +4,9 @@
     <button (click)="addBox($event)">Add Box</button>
 </div>
 <div class="center">
-    <div class="position_indicator" [style.top]="rectangle.top" [style.left]="rectangle.left">
-        100,100
+    <div class="position_indicator" *ngIf="rectangle.position_indicator" [style.top]="rectangle.top"
+        [style.left]="rectangle.left">
+        {{rectangle.position_text}}
     </div>
     <svg-container containerId="svg-element" (mouseDownEvent)="mouseDownContainer($event)"
         (mouseUpEvent)="mouseUpContainer($event)" (mouseOutEvent)="mouseOutContainer($event)"
