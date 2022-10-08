@@ -15,6 +15,7 @@ export class Rectangle {
     public position_indicator = false;
     public top = '50px';
     public left = '50px';
+    public position_text = "";
 
     constructor(resizingPoints: ResizingPoint) {
         this.rectangulars.push(
@@ -64,10 +65,6 @@ export class Rectangle {
 
     public mouseDownRect(event: Event, rect: Rectangular) {
 
-        // console.log(event);
-        // let e = (event as MouseEvent);
-        // this.top = (e.offsetY + 100) + "px";
-        // this.left = e.offsetX + "px";
         this.position_indicator = true;
 
         let element = (event.target as HTMLElement);
@@ -92,6 +89,8 @@ export class Rectangle {
         this.toggleBoxActiveState(rect, element);
 
         this.resizingPoints.updateBoxBoundary(rect);
+
+        this.position_indicator = false;
 
         event.preventDefault();
 
@@ -141,8 +140,10 @@ export class Rectangle {
     private updateIndicatorPosition(cord: Point) {
 
         if (this.position_indicator == true) {
-            this.top = (cord.y + 100) + "px";
-            this.left = cord.x + "px";
+
+            this.top = (this.moveableShape!.y + this.moveableShape!.height + 20) + "px";
+            this.left = (this.moveableShape!.x + this.moveableShape!.width / 2 - 25) + "px";
+            this.position_text = `${this.moveableShape!.x},${this.moveableShape!.y}`;
         }
 
     }
