@@ -23,6 +23,8 @@ export class AppComponent {
   public all_colors: string[][] = [];
   public active_colors: string[] = [];
 
+  private dragStartLocation?:Point = undefined;
+
   constructor() {
     this.line = new Line();
     this.resizingPoints = new ResizingPoint();
@@ -53,8 +55,11 @@ export class AppComponent {
   }
 
   public mouseMove(event: Point) {
-    this.rectangle.updateMovement(event);
-    this.line.updatePosition(event);
+    if(this.dragStartLocation){
+      let drag = this.getDragDifference(event);
+      this.rectangle.updateMovement(event,drag);
+      this.line.updatePosition(event);
+    }
   }
 
   public mouseUpContainer(event: Event) {
@@ -62,13 +67,18 @@ export class AppComponent {
   }
 
   public mouseDownContainer(event: MouseEvent) {
-    let location: Point = { x: event.offsetX, y: event.offsetY };
-    this.rectangle.setContainerMouseDownPoint(location);
+    this.dragStartLocation = { x: event.offsetX, y: event.offsetY };
   }
 
   public mouseOutContainer(event: MouseEvent) {
     // this.rectangle.inactive();
     this.rectangle.deactivateMovement();
+  }
+
+  private getDragDifference(new_location:Point):Point {
+      let x_difference = new_location.x - this.dragStartLocation!.x;
+      let y_difference = new_location.y - this.dragStartLocation!.y;
+      return {x:x_difference,y:y_difference};
   }
 
 }
