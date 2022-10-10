@@ -70,17 +70,13 @@ export class Rectangle {
 
         this.resizingPoints.updateBoxBoundary(rect);
 
-        console.log("mouse down rect");
-
         event.preventDefault();
 
     }
 
     public mouseUpRect(event: Event, rect: Rectangular) {
 
-        let element = (event.target as HTMLElement);
-
-        this.boxMovement.deactivateBox(element);
+        this.boxMovement.deactivateBox();
 
         this.resizingPoints.updateBoxBoundary(rect);
 
@@ -91,28 +87,26 @@ export class Rectangle {
     }
 
     public mouseOutRect(event: MouseEvent) {
-        console.log("mouseOutRect");
         let t: HTMLElement = (event.target as HTMLElement);
         t.classList.remove("rect_border");
     }
 
     public mouseOverRect(event: MouseEvent) {
-        console.log("mouseOverRect");
         let t: HTMLElement = (event.target as HTMLElement);
         t.classList.add("rect_border");
     }
 
 
-    public updateMovement(new_location: Point,drag:Point) {
-        let movedStatus = this.boxMovement.updateMovement(new_location,drag);
-        if(movedStatus){
+    public updateMovement(new_location: Point, drag: Point) {
+        let movedStatus = this.boxMovement.updateMovement(drag);
+        if (movedStatus) {
             this.updateIndicatorPosition(new_location)
         }
         this.resizingPoints.updateResize(new_location, this.focusedShape!);
     }
 
     public deactivateMovement() {
-        this.boxMovement.deactivateMovement();
+        this.boxMovement.deactivateBox();
         this.resizingPoints.deactivate();
     }
 
