@@ -6,17 +6,14 @@ export class BoxMovement implements IMoveable {
 
     private moveableShape?: Rectangular = undefined;
     private initialLocation?: Point = undefined;
+    private htmlElement?: HTMLElement = undefined;
     private resizingPoints: ResizingPoint;
 
-    constructor(resizingPoints: ResizingPoint){
+    constructor(resizingPoints: ResizingPoint) {
         this.resizingPoints = resizingPoints;
     }
 
-    public deactivateMovement() {
-        this.moveableShape = undefined;
-    }
-
-    public updateMovement(new_location: Point,drag:Point): boolean {
+    public updateMovement(drag: Point): boolean {
 
         if (this.moveableShape) {
 
@@ -40,15 +37,16 @@ export class BoxMovement implements IMoveable {
     }
 
 
-    public activateBox(rect: Rectangular, element: HTMLElement){
-        this.initialLocation = {x:rect.x,y:rect.y};
+    public activateBox(rect: Rectangular, element: HTMLElement) {
+        this.initialLocation = { x: rect.x, y: rect.y };
         this.moveableShape = rect;
+        this.htmlElement = element;
         element.classList.add("active_rect");
     }
 
-    public deactivateBox(element: HTMLElement) {
+    public deactivateBox() {
         this.initialLocation = undefined;
         this.moveableShape = undefined;
-        element.classList.remove("active_rect");
+        this.htmlElement!.classList.remove("active_rect");
     }
 }
