@@ -30,7 +30,7 @@ export class BoxMovement implements IMoveable {
                 this.moveableShape.y = new_y;
             }
 
-            this.resizingPoints.updateBoxBoundary(this.moveableShape);
+            this.resizingPoints.updateBoxBoundary();
             return true
         }
 

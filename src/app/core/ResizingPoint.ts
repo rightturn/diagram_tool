@@ -1,9 +1,10 @@
 import { Box } from "./Box";
-import { Point, Rectangular } from "./Rectangle";
+import { Point, Rectangle, Rectangular } from "./Rectangle";
 
 export class ResizingPoint {
 
     private activeResizePoint?: ResizeablePoint = undefined;
+    private focusedShape?: Rectangle = undefined;
 
     public points: ResizeablePoint[] = [];
     public radiusCircle = 5;
@@ -24,68 +25,73 @@ export class ResizingPoint {
         this.points = [];
     }
 
-    public updateResize(cords: Point, focusedShape: Rectangular) {
+    public updateResize(cords: Point) {
 
+        console.log("updateResize");
         if (this.activeResizePoint) {
 
             if (this.activeResizePoint.label == ResizeablePointLabel.RIGHT) {
-                this.resizeFromRight(cords, focusedShape);
+                this.resizeFromRight(cords);
             }
 
             if (this.activeResizePoint.label == ResizeablePointLabel.LEFT) {
-                this.resizeFromLeft(cords, focusedShape);
+                this.resizeFromLeft(cords);
             }
 
             if (this.activeResizePoint.label == ResizeablePointLabel.BOTTOM) {
-                this.resizeFromBottom(cords, focusedShape);
+                this.resizeFromBottom(cords);
             }
 
             if (this.activeResizePoint.label == ResizeablePointLabel.TOP) {
-                this.resizeFromTop(cords, focusedShape);
+                this.resizeFromTop(cords);
             }
 
-            this.updateBoxBoundary(focusedShape);
+            this.updateBoxBoundary();
 
         }
     }
 
-    private resizeFromRight(cords: Point, focusedShape: Rectangular) {
-        let new_width = cords.x - focusedShape.x;
-        focusedShape.width = new_width >= (this.radiusCircle * 2) ? new_width : focusedShape.width;
+    private resizeFromRight(cords: Point) {
+        let new_width = cords.x - this.focusedShape!.x;
+        this.focusedShape!.width = new_width >= (this.radiusCircle * 2) ? new_width : this.focusedShape!.width;
     }
 
-    private resizeFromTop(cords: Point, focusedShape: Rectangular) {
-            let old_y = focusedShape.y;
-            if (cords.y > old_y ) {
-                if(focusedShape.height >= this.radiusCircle * 2){
-                    focusedShape.height -= cords.y - old_y;
-                    focusedShape.y = cords.y;
-                }
-            } else {
-                focusedShape.height += old_y - cords.y;
-                focusedShape.y = cords.y;
-            }
-    }
-
-    private resizeFromBottom(cords: Point, focusedShape: Rectangular) {
-        let new_height = cords.y - focusedShape.y;
-        focusedShape.height = new_height >= (this.radiusCircle * 2) ? new_height : focusedShape.height;
-    }
-
-    private resizeFromLeft(cords: Point, focusedShape: Rectangular) {
-        let old_x = focusedShape.x;
-        if (cords.x > old_x) {
-            if(focusedShape.width >= this.radiusCircle * 2){
-                focusedShape.width -= cords.x - old_x;
-                focusedShape.x = cords.x;
+    private resizeFromTop(cords: Point) {
+        let old_y = this.focusedShape!.y;
+        if (cords.y > old_y) {
+            if (this.focusedShape!.height >= this.radiusCircle * 2) {
+                this.focusedShape!.height -= cords.y - old_y;
+                this.focusedShape!.y = cords.y;
             }
         } else {
-            focusedShape.width += old_x - cords.x;
-            focusedShape.x = cords.x;
+            this.focusedShape!.height += old_y - cords.y;
+            this.focusedShape!.y = cords.y;
         }
     }
 
-    public updateBoxBoundary(rect: Box) {
+    private resizeFromBottom(cords: Point) {
+        let new_height = cords.y - this.focusedShape!.y;
+        this.focusedShape!.height = new_height >= (this.radiusCircle * 2) ? new_height : this.focusedShape!.height;
+    }
+
+    private resizeFromLeft(cords: Point) {
+        let old_x = this.focusedShape!.x;
+        if (cords.x > old_x) {
+            if (this.focusedShape!.width >= this.radiusCircle * 2) {
+                this.focusedShape!.width -= cords.x - old_x;
+                this.focusedShape!.x = cords.x;
+            }
+        } else {
+            this.focusedShape!.width += old_x - cords.x;
+            this.focusedShape!.x = cords.x;
+        }
+    }
+
+    public setFocusedShape(rect: Rectangle) {
+        this.focusedShape = rect;
+    }
+
+    public updateBoxBoundary() {
 
         // let box: BoxBoundaryCordinates = this.getBoxCornerBoundaryCordinates(rect);
 
@@ -94,7 +100,7 @@ export class ResizingPoint {
         // let bottom_right: Point = { x: box.right_x, y: box.bottom_y };
         // let bottom_left: Point = { x: box.left_x, y: box.bottom_y };
 
-        let box = this.getBoxLineCenterBoundaryCordinates(rect);
+        let box = this.getBoxLineCenterBoundaryCordinates(this.focusedShape!);
 
         let top: ResizeablePoint = { x: box.center_x, y: box.start_y, label: ResizeablePointLabel.TOP };
         let right: ResizeablePoint = { x: box.end_x, y: box.center_y, label: ResizeablePointLabel.RIGHT };

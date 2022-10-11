@@ -50,10 +50,6 @@ export class AppComponent {
     this.active_colors = this.all_colors[this.active_colors_index];
   }
 
-  public addBox(event: Event) {
-    this.rectangleList.add();
-  }
-
   public containerClick(event: Event) {
     // this.rectangle.inactive();
   }
@@ -64,12 +60,16 @@ export class AppComponent {
       if (RectangleList.moveableRectangle) {
         RectangleList.moveableRectangle.updateMovement(event, drag);
       }
+      this.resizingPoints.updateResize(event)
       this.line.updatePosition(event);
     }
   }
 
   public mouseUpContainer(event: Event) {
-    // this.rectangle.deactivateMovement();
+    if (RectangleList.moveableRectangle) {
+      RectangleList.moveableRectangle.deactivateMovement();
+    }
+    this.resizingPoints.deactivate();
   }
 
   public mouseDownContainer(event: MouseEvent) {
