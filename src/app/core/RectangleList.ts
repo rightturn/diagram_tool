@@ -5,7 +5,7 @@ import { ResizingPoint } from "./ResizingPoint";
 export class RectangleList {
 
     private static instance?: RectangleList = undefined;
-    public static moveableRectangle?: Rectangle = undefined;
+    // public static moveableRectangle?: Rectangle = undefined;
 
     public rectangles: Rectangle[] = [];
     private resizingPoints: ResizingPoint;

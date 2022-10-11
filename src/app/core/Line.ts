@@ -1,3 +1,4 @@
+import { DrawingShape } from "./DrawingShape";
 
 export class Line {
 
@@ -14,14 +15,16 @@ export class Line {
 
     constructor() {
 
-        this.lines = [
-            {
-                x0: 200,
-                x1: 400,
-                y0: 200,
-                y1: 400
-            }
-        ];
+        // super(rectangular.id, rectangular.x, rectangular.y);
+
+        // this.lines = [
+        //     {
+        //         x0: 200,
+        //         x1: 400,
+        //         y0: 200,
+        //         y1: 400
+        //     }
+        // ];
 
         this.classes = ['moveable']
 

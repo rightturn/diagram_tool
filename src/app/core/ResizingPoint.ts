@@ -1,5 +1,6 @@
 import { Box } from "./Box";
-import { Point, Rectangle, Rectangular } from "./Rectangle";
+import { Point } from "./DrawingShape";
+import { Rectangle } from "./Rectangle";
 
 export class ResizingPoint {
 

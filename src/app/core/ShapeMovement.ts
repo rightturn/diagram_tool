@@ -1,34 +1,33 @@
-import { DrawingShape } from "./DrawingShape";
-import { IMoveable } from "./IMoveable";
-import { Point } from "./Rectangle";
+import { AppComponent } from "../app.component";
+import { DrawingShape, Point } from "./DrawingShape";
 import { ResizingPoint } from "./ResizingPoint";
 
-export class ShapeMovement implements IMoveable {
+export abstract class ShapeMovement {
 
-    private moveableShape?: DrawingShape = undefined;
-    private initialLocation?: Point = undefined;
-    private htmlElement?: HTMLElement = undefined;
-    private resizingPoints: ResizingPoint;
+    protected moveableShape: DrawingShape;
+    protected initialLocation?: Point = undefined;
+    protected htmlElement?: HTMLElement = undefined;
+    protected resizingPoints: ResizingPoint;
 
-    constructor(resizingPoints: ResizingPoint) {
+    constructor(resizingPoints: ResizingPoint, moveableShape: DrawingShape) {
         this.resizingPoints = resizingPoints;
+        this.moveableShape = moveableShape;
     }
 
-    updateMovement(drag: Point): void {
-        throw new Error("Method not implemented.");
-    }
+    abstract updateMovement(drag: Point): boolean;
 
-    public activate(shape: DrawingShape, element: HTMLElement) {
-        this.initialLocation = { x: shape.x, y: shape.y };
-        this.moveableShape = shape;
+    public activate(element: HTMLElement) {
+        AppComponent.moveableShape = this.moveableShape;
+        this.initialLocation = { x: this.moveableShape.x, y: this.moveableShape.y };
+        // this.moveableShape = shape;
         this.htmlElement = element;
         // element.classList.add("active_line");
     }
 
     public deactivate() {
+        AppComponent.moveableShape = undefined;
         this.initialLocation = undefined;
-        this.moveableShape = undefined;
-
+        // this.moveableShape = undefined;
         if (this.htmlElement) {
             // this.htmlElement!.classList.remove("active_rect");
         }
