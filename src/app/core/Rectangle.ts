@@ -48,7 +48,8 @@ export class Rectangle extends DrawingShape {
 
         this.boxMovement.activateBox(element);
 
-        // this.resizingPoints.updateBoxBoundary(rect);
+        this.resizingPoints.setFocusedShape(this)
+        this.resizingPoints.updateBoxBoundary();
 
         event.preventDefault();
 
@@ -58,7 +59,7 @@ export class Rectangle extends DrawingShape {
 
         this.boxMovement.deactivateBox();
 
-        this.resizingPoints.updateBoxBoundary(this);
+        this.resizingPoints.updateBoxBoundary();
 
         this.positionIndicator.visible = false;
 
@@ -82,7 +83,7 @@ export class Rectangle extends DrawingShape {
         if (movedStatus) {
             this.updateIndicatorPosition(new_location)
         }
-        // this.resizingPoints.updateResize(new_location, this.focusedShape!);
+        // this.resizingPoints.updateResize(new_location);
     }
 
     public deactivateMovement() {
