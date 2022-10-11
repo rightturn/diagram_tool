@@ -4,19 +4,18 @@
     <button (click)="addBox($event)">Add Box</button>
 </div>
 <div class="center">
-    <div class="position_indicator" *ngIf="rectangle.position_indicator" [style.top]="rectangle.top"
-        [style.left]="rectangle.left">
-        {{rectangle.position_text}}
+    <div class="position_indicator" *ngIf="positionIndicator.visible" [style.top]="positionIndicator.top"
+        [style.left]="positionIndicator.left">
+        {{positionIndicator.position_text}}
     </div>
     <svg-container containerId="svg-element" (mouseDownEvent)="mouseDownContainer($event)"
         (mouseUpEvent)="mouseUpContainer($event)" (mouseOutEvent)="mouseOutContainer($event)"
         (mouseClickEvent)="containerClick($event)" (mouseMoveEvent)="mouseMove($event)" [height]='800'>
 
-        <svg-rect [classes]="rectangle.classes" (mouseDownEvent)="rectangle.mouseDownRect($event,rectangular)"
-            (clickEvent)="rectangle.clickRect($event)" (mouseUpEvent)="rectangle.mouseUpRect($event,rectangular)"
-            [height]="rectangular.height" [width]="rectangular.width" [color]="rectangular.color" [rx]="rectangular.rx"
-            [ry]="rectangular.ry" [x]="rectangular.x" [y]="rectangular.y"
-            *ngFor="let rectangular of rectangle.rectangulars">
+        <svg-rect [classes]="rectangle.classes" (mouseDownEvent)="rectangle.mouseDownRect($event)"
+            (clickEvent)="rectangle.clickRect($event)" (mouseUpEvent)="rectangle.mouseUpRect($event)"
+            [height]="rectangle.height" [width]="rectangle.width" [color]="rectangle.color" [x]="rectangle.x"
+            [y]="rectangle.y" *ngFor="let rectangle of rectangleList.rectangles">
         </svg-rect>
         <svg-circle (mouseUpEvent)="resizingPoints.mouseUpResizePoint($event,point)"
             (mouseDownEvent)="resizingPoints.mouseDownResizePoint($event,point)" [x]="point.x" [y]="point.y"

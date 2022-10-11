@@ -1,86 +1,66 @@
 import { BoxMovement } from "./BoxMovement";
 import { ResizingPoint } from "./ResizingPoint";
+import { DrawingShape } from "./DrawingShape";
+import { PositionIndicator } from "./PositionIndicator";
+import { RectangleList } from "./RectangleList";
 
-export class Rectangle {
+export class Rectangle extends DrawingShape {
 
-    private focusedShape?: Rectangular = undefined;
-    private resizingPoints: ResizingPoint;
+    // private focusedShape?: Rectangular = undefined;
     private boxMovement: BoxMovement;
+    private resizingPoints: ResizingPoint;
+    private positionIndicator: PositionIndicator;
 
-    public rectangulars: Rectangular[] = [];
+    public height: number;
+    public width: number;
+    public color: string;
+
     public classes: string[] = [];
 
-    public position_indicator = false;
-    public top = '50px';
-    public left = '50px';
-    public position_text = "";
+    constructor(resizingPoints: ResizingPoint, positionIndicator: PositionIndicator, rectangular: Rectangular,) {
 
-    constructor(resizingPoints: ResizingPoint) {
-        this.rectangulars.push(
-            {
-                height: 100,
-                width: 200,
-                color: 'rgba(255,255,255)',
-                x: 20,
-                y: 30,
-                rx: 0,
-                ry: 0,
-                id: this.getNextIdForRectangle()
-            }
-        );
+        super(rectangular.id, rectangular.x, rectangular.y);
+        this.height = rectangular.height;
+        this.width = rectangular.width;
+        this.color = rectangular.color;
 
+        this.positionIndicator = positionIndicator;
         this.resizingPoints = resizingPoints;
         this.classes = ['moveable']
-        this.boxMovement = new BoxMovement(resizingPoints);
+        this.boxMovement = new BoxMovement(resizingPoints, this);
 
     }
 
     public setFillColor(color: string) {
-        if (this.focusedShape) {
-            this.focusedShape.color = color;
-        }
+        // if (this.focusedShape) {
+        //     this.focusedShape.color = color;
+        // }
+        this.color = color;
     }
 
-    public add() {
+    public mouseDownRect(event: Event) {
 
-        this.rectangulars.push(
-            {
-                height: 100,
-                width: 100,
-                color: 'rgba(255,255,255)',
-                x: 100,
-                y: 100,
-                rx: 0,
-                ry: 0,
-                id: this.getNextIdForRectangle()
-            }
-        );
-
-    }
-
-    public mouseDownRect(event: Event, rect: Rectangular) {
-
-        this.position_indicator = true;
+        this.positionIndicator.visible = true;
 
         let element = (event.target as HTMLElement);
 
-        this.focusedShape = rect;
+        // this.focusedShape = rect;
 
-        this.boxMovement.activateBox(rect, element);
+        this.boxMovement.activateBox(element);
 
-        this.resizingPoints.updateBoxBoundary(rect);
+        // this.resizingPoints.updateBoxBoundary(rect);
 
         event.preventDefault();
 
     }
 
-    public mouseUpRect(event: Event, rect: Rectangular) {
+    public mouseUpRect(event: Event) {
 
         this.boxMovement.deactivateBox();
 
-        this.resizingPoints.updateBoxBoundary(rect);
+        this.resizingPoints.updateBoxBoundary(this);
 
-        this.position_indicator = false;
+        this.positionIndicator.visible = false;
 
         event.preventDefault();
 
@@ -102,7 +82,7 @@ export class Rectangle {
         if (movedStatus) {
             this.updateIndicatorPosition(new_location)
         }
-        this.resizingPoints.updateResize(new_location, this.focusedShape!);
+        // this.resizingPoints.updateResize(new_location, this.focusedShape!);
     }
 
     public deactivateMovement() {
@@ -116,25 +96,19 @@ export class Rectangle {
     }
 
     public inactive() {
-        this.focusedShape = undefined;
+        // this.focusedShape = undefined;
         this.deactivateMovement();
         this.resizingPoints.inactive();
     }
 
-    private getNextIdForRectangle(): number {
-        if (this.rectangulars.length > 0) {
-            return this.rectangulars.length;
-        }
-        return 1;
-    }
 
     private updateIndicatorPosition(cord: Point) {
 
-        if (this.position_indicator == true) {
+        if (this.positionIndicator.visible) {
 
-            this.top = (this.focusedShape!.y + this.focusedShape!.height + 20) + "px";
-            this.left = (this.focusedShape!.x + this.focusedShape!.width / 2 - 25) + "px";
-            this.position_text = `${this.focusedShape!.x},${this.focusedShape!.y}`;
+            this.positionIndicator.top = (this.y + this.height + 20) + "px";
+            this.positionIndicator.left = (this.x + this.width / 2 - 25) + "px";
+            this.positionIndicator.position_text = `${this.x},${this.y}`;
         }
 
     }
