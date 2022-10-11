@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { faCoffee, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { DrawingShape, Point } from './core/DrawingShape';
 import { Line } from './core/Line';
 import { PositionIndicator } from './core/PositionIndicator';
-import { Point, Rectangle, Rectangular } from './core/Rectangle';
 import { RectangleList } from './core/RectangleList';
 import { ResizingPoint } from './core/ResizingPoint';
 
@@ -17,6 +17,8 @@ export class AppComponent {
   public resizingPoints: ResizingPoint;
   public positionIndicator: PositionIndicator;
   public line: Line;
+
+  public static moveableShape?: DrawingShape = undefined;
 
 
   faAngleLeft = faAngleLeft;
@@ -57,8 +59,8 @@ export class AppComponent {
   public mouseMove(event: Point) {
     if (this.dragStartLocation) {
       let drag = this.getDragDifference(event);
-      if (RectangleList.moveableRectangle) {
-        RectangleList.moveableRectangle.updateMovement(event, drag);
+      if (AppComponent.moveableShape) {
+        AppComponent.moveableShape.updateMovement(event, drag);
       }
       this.resizingPoints.updateResize(event)
       this.line.updatePosition(event);
@@ -66,8 +68,8 @@ export class AppComponent {
   }
 
   public mouseUpContainer(event: Event) {
-    if (RectangleList.moveableRectangle) {
-      RectangleList.moveableRectangle.deactivateMovement();
+    if (AppComponent.moveableShape) {
+      AppComponent.moveableShape.deactivateMovement();
     }
     this.resizingPoints.deactivate();
   }

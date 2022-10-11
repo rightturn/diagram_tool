@@ -1,19 +1,7 @@
-import { IMoveable } from "./IMoveable";
-import { Point, Rectangle, Rectangular } from "./Rectangle";
-import { RectangleList } from "./RectangleList";
-import { ResizingPoint } from "./ResizingPoint";
+import { Point } from "./DrawingShape";
+import { ShapeMovement } from "./ShapeMovement";
 
-export class BoxMovement implements IMoveable {
-
-    private moveableShape: Rectangle;
-    private initialLocation?: Point = undefined;
-    private htmlElement?: HTMLElement = undefined;
-    private resizingPoints: ResizingPoint;
-
-    constructor(resizingPoints: ResizingPoint, moveableShape: Rectangle) {
-        this.resizingPoints = resizingPoints;
-        this.moveableShape = moveableShape;
-    }
+export class BoxMovement extends ShapeMovement {
 
     public updateMovement(drag: Point): boolean {
 
@@ -39,19 +27,15 @@ export class BoxMovement implements IMoveable {
     }
 
 
-    public activateBox(element: HTMLElement) {
-        RectangleList.moveableRectangle = this.moveableShape;
-        this.initialLocation = { x: this.moveableShape.x, y: this.moveableShape.y };
-        this.htmlElement = element;
+    public override activate(element: HTMLElement) {
+        super.activate(element);
         element.classList.add("active_rect");
     }
 
-    public deactivateBox() {
-        RectangleList.moveableRectangle = undefined;
-        this.initialLocation = undefined;
+    public override deactivate() {
+        super.deactivate();
         if (this.htmlElement) {
             this.htmlElement!.classList.remove("active_rect");
         }
-
     }
 }
