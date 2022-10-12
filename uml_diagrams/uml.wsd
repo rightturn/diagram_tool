@@ -1,0 +1,161 @@
+@startuml
+abstract class ResizeBoundary {
+    mouseUpResizePoint(event: Event, point: ResizeablePoint)
+    mouseDownResizePoint(event: Event, point: ResizeablePoint)
+    deactivate()
+    inactive()
+    {abstract} updateResize(cords: Point) 
+    setFocusedShape(rect: DrawingShape) 
+    updateBoxBoundary() 
+}
+
+class BoxResizeBoundary extends ResizeBoundary {
+    updateResize(cords: Point) 
+}
+
+class CircleResizeBoundary extends ResizeBoundary {
+    updateResize(cords: Point) 
+}
+
+class TriangleResizeBoundary extends ResizeBoundary {
+    updateResize(cords: Point) 
+}
+
+
+abstract class DrawingShape {
+    public x: number = 0;
+    public y: number = 0;
+    public id: number = 0;
+    public color: string = "";
+    public classes: string[] = [];
+    protected shapeMovement?: ShapeMovement;
+    protected resizingPoints: ResizingPoint;
+    protected positionIndicator: PositionIndicator;
+
+    constructor(id: number, x: number, y: number, color: string, resizingPoints: ResizingPoint, positionIndicator: PositionIndicator) 
+    public abstract updateMovement(new_location: Point, drag: Point): void;
+    public setFillColor(color: string) 
+    public mouseDownRect(event: Event): void 
+    public mouseUpRect(event: Event) 
+    public mouseOutRect(event: MouseEvent) 
+    public mouseOverRect(event: MouseEvent) 
+    public deactivateMovement() 
+    public clickRect(event: Event) 
+    public inactive() 
+}
+
+class Rectangle extends DrawingShape {
+    public height: number;
+    public width: number;
+
+    constructor(resizingPoints: ResizingPoint, positionIndicator: PositionIndicator, rectangular: Rectangular)
+    public override mouseDownRect(event: Event): void 
+    public updateMovement(new_location: Point, drag: Point): void
+    private updateIndicatorPosition(cord: Point) 
+}
+
+
+abstract class ShapeMovement {
+
+    protected moveableShape: DrawingShape;
+    protected initialLocation?: Point = undefined;
+    protected htmlElement?: HTMLElement = undefined;
+    protected resizingPoints: ResizingPoint;
+
+    constructor(resizingPoints: ResizingPoint, moveableShape: DrawingShape)
+    abstract updateMovement(drag: Point): boolean;
+    public activate(element: HTMLElement)
+    public deactivate()
+}
+
+class BoxMovement extends ShapeMovement {
+    public updateMovement(drag: Point): boolean 
+    public override activate(element: HTMLElement)
+    public override deactivate()
+}
+
+class CircleMovement extends ShapeMovement {
+    updateMovement(drag: Point): boolean 
+}
+
+interface IMoveable {
+    updateMovement(drag: Point): void;
+}
+class Line {
+
+    public line_border_size = 3;
+    public lines: SimpleLine[] = [];
+    public points: PositionPoint[] = [];
+    public diameterCircle = 10;
+    public classes: string[] = [];
+
+    private activePoint?: PositionPoint;
+    private activeLine?: SimpleLine;
+
+    constructor() 
+    click(event: Event, activeLine: SimpleLine)
+    mouseUp(event: Event) 
+    mouseDown(event: Event, l_point: PositionPoint)
+    private setPositionPoint()
+    public updatePosition(cords: PositionPoint)
+}
+
+class LineList {
+    private static instance?: LineList = undefined;
+    public static moveableLine?: Line = undefined;
+    public lines: Line[] = [];
+    private resizingPoints: ResizingPoint;
+    private positionIndicator: PositionIndicator;
+
+    private constructor(resizingPoints: ResizingPoint, positionIndicator: PositionIndicator)
+    public static getInstance(resizingPoints: ResizingPoint, positionIndicator: PositionIndicator): LineList
+    public add()
+}
+
+class LineMovement implements IMoveable {
+    updateMovement(drag: Point): void 
+}
+
+class PositionIndicator {
+    public visible = false;
+    public top = '50px';
+    public left = '50px';
+    public position_text = "";
+}
+
+class RectangleList {
+
+    private static instance?: RectangleList = undefined;
+
+    public rectangles: Rectangle[] = [];
+    private resizingPoints: ResizingPoint;
+    private positionIndicator: PositionIndicator;
+    private constructor(resizingPoints: ResizingPoint, positionIndicator: PositionIndicator)
+
+    public static getInstance(resizingPoints: ResizingPoint, positionIndicator: PositionIndicator): RectangleList
+    public add()
+    private getNextIdForRectangle(): number
+}
+
+interface SimpleLine {
+    x0: number;
+    x1: number;
+    y0: number;
+    y1: number;
+}
+
+interface PositionPoint {
+    x: number;
+    y: number;
+}
+
+interface Box {
+    height: number;
+    width: number;
+    x: number;
+    y: number;
+}
+
+ResizeBoundary *-- DrawingShape
+
+@enduml
