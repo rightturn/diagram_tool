@@ -1,29 +1,42 @@
-import { BoxMovement } from "./BoxMovement";
-import { ResizingPoint } from "./ResizingPoint";
 import { DrawingShape, Point } from "./DrawingShape";
-import { PositionIndicator } from "./PositionIndicator";
 export class Rectangle extends DrawingShape {
 
     public height: number;
     public width: number;
 
-    constructor(resizingPoints: ResizingPoint, positionIndicator: PositionIndicator, rectangular: Rectangular) {
-        super(rectangular.id, rectangular.x, rectangular.y, rectangular.color, resizingPoints, positionIndicator);
+    constructor(rectangular: Rectangular) {
+        super(rectangular.id, rectangular.x, rectangular.y, rectangular.color);
         this.height = rectangular.height;
         this.width = rectangular.width;
-        this.shapeMovement = new BoxMovement(resizingPoints, this);
+        // this.shapeMovement = new BoxMovement(this.resizingPoints, this);
     }
 
     public override mouseDownRect(event: Event): void {
-        this.resizingPoints.setFocusedShape(this)
+        this.shapeBoundary.setFocusedShape(this)
         super.mouseDownRect(event);
     }
 
-    public updateMovement(new_location: Point, drag: Point): void {
-        let movedStatus = this.shapeMovement!.updateMovement(drag);
-        if (movedStatus) {
-            this.updateIndicatorPosition(new_location)
+    public move(drag: Point): void {
+
+        let new_x = this.initialLocation!.x + drag.x;
+        let new_y = this.initialLocation!.y + drag.y;
+
+        if (new_x >= 0) {
+            this.x = new_x;
         }
+
+        if (new_y >= 0) {
+            this.y = new_y;
+        }
+
+        this.shapeBoundary.updateBoxBoundary();
+
+    }
+
+
+    public updateMovement(new_location: Point, drag: Point): void {
+        this.move(drag);
+        this.updateIndicatorPosition(new_location)
     }
 
     private updateIndicatorPosition(cord: Point) {

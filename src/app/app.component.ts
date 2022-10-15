@@ -4,7 +4,7 @@ import { DrawingShape, Point } from './core/DrawingShape';
 import { Line } from './core/Line';
 import { PositionIndicator } from './core/PositionIndicator';
 import { RectangleList } from './core/RectangleList';
-import { ResizingPoint } from './core/ResizingPoint';
+// import { ResizeBoundary } from './core/ShapeBoundary';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +14,8 @@ import { ResizingPoint } from './core/ResizingPoint';
 export class AppComponent {
 
   public rectangleList: RectangleList;
-  public resizingPoints: ResizingPoint;
-  public positionIndicator: PositionIndicator;
+  // public resizingPoints: ResizeBoundary;
+  // public positionIndicator: PositionIndicator;
   public line: Line;
 
   public static moveableShape?: DrawingShape = undefined;
@@ -32,10 +32,10 @@ export class AppComponent {
 
   constructor() {
     this.line = new Line();
-    this.resizingPoints = new ResizingPoint();
-    this.positionIndicator = new PositionIndicator();
-    this.rectangleList = RectangleList.getInstance(this.resizingPoints, this.positionIndicator);
 
+    // this.resizingPoints = ResizeBoundary.getInstance();
+    // this.positionIndicator = PositionIndicator.getInstance();
+    this.rectangleList = RectangleList.getInstance();
 
     this.all_colors = [["#ffa347", "#ff4b47", "#ff4b92", "#ff4b1a", "#2c4b1a", "#f1173a", "#21463a", "#2146b6"],
     ["#FFA07A", "#B22222", "#FFA500", "#BDB76B", "#228B22", "#3CB371", "#48D1CC", "#008B8B"]];
@@ -62,7 +62,7 @@ export class AppComponent {
       if (AppComponent.moveableShape) {
         AppComponent.moveableShape.updateMovement(event, drag);
       }
-      this.resizingPoints.updateResize(event)
+      // this.resizingPoints.updateResize(event)
       this.line.updatePosition(event);
     }
   }
@@ -71,7 +71,7 @@ export class AppComponent {
     if (AppComponent.moveableShape) {
       AppComponent.moveableShape.deactivateMovement();
     }
-    this.resizingPoints.deactivate();
+    // this.resizingPoints.deactivate();
   }
 
   public mouseDownContainer(event: MouseEvent) {

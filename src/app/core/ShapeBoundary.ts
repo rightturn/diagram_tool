@@ -2,7 +2,7 @@ import { Box } from "./Box";
 import { Point } from "./DrawingShape";
 import { Rectangle } from "./Rectangle";
 
-export class ResizingPoint {
+export class ShapeBoundary {
 
     private activeResizePoint?: ResizeablePoint = undefined;
     private focusedShape?: Rectangle = undefined;

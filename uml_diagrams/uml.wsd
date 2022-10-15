@@ -28,27 +28,32 @@ abstract class DrawingShape {
     public id: number = 0;
     public color: string = "";
     public classes: string[] = [];
+
     protected shapeMovement?: ShapeMovement;
     protected resizingPoints: ResizingPoint;
     protected positionIndicator: PositionIndicator;
 
-    constructor(id: number, x: number, y: number, color: string, resizingPoints: ResizingPoint, positionIndicator: PositionIndicator) 
+    constructor(id: number, x: number, y: number, color: string)
+
     public abstract updateMovement(new_location: Point, drag: Point): void;
-    public setFillColor(color: string) 
-    public mouseDownRect(event: Event): void 
-    public mouseUpRect(event: Event) 
-    public mouseOutRect(event: MouseEvent) 
-    public mouseOverRect(event: MouseEvent) 
-    public deactivateMovement() 
-    public clickRect(event: Event) 
-    public inactive() 
+    public setFillColor(color: string)
+    public mouseDownRect(event: Event): void
+    public mouseUpRect(event: Event)
+    public mouseOutRect(event: MouseEvent)
+    public mouseOverRect(event: MouseEvent)
+    public deactivateMovement()
+    public clickRect(event: Event)
+    public inactive()
 }
+DrawingShape --* ResizeBoundary
+DrawingShape --* ShapeMovement
+DrawingShape --* PositionIndicator
 
 class Rectangle extends DrawingShape {
     public height: number;
     public width: number;
 
-    constructor(resizingPoints: ResizingPoint, positionIndicator: PositionIndicator, rectangular: Rectangular)
+    constructor(rectangular: Rectangular)
     public override mouseDownRect(event: Event): void 
     public updateMovement(new_location: Point, drag: Point): void
     private updateIndicatorPosition(cord: Point) 
@@ -121,21 +126,22 @@ class PositionIndicator {
     public top = '50px';
     public left = '50px';
     public position_text = "";
+
+    private static instance?: PositionIndicator = undefined;
+    private constructor() { }
+    public static getInstance(): PositionIndicator
 }
 
 class RectangleList {
+    public rectangles: Rectangle[] = [];
 
     private static instance?: RectangleList = undefined;
-
-    public rectangles: Rectangle[] = [];
-    private resizingPoints: ResizingPoint;
-    private positionIndicator: PositionIndicator;
-    private constructor(resizingPoints: ResizingPoint, positionIndicator: PositionIndicator)
-
-    public static getInstance(resizingPoints: ResizingPoint, positionIndicator: PositionIndicator): RectangleList
+    private constructor()
+    public static getInstance(): RectangleList
     public add()
     private getNextIdForRectangle(): number
 }
+RectangleList "1" *-- "many" Rectangle : contains
 
 interface SimpleLine {
     x0: number;
@@ -156,6 +162,5 @@ interface Box {
     y: number;
 }
 
-ResizeBoundary *-- DrawingShape
 
 @enduml
