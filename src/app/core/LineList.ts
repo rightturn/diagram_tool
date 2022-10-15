@@ -1,7 +1,7 @@
 import { Line, SimpleLine } from "./Line";
 import { PositionIndicator } from "./PositionIndicator";
 import { Rectangle, Rectangular } from "./Rectangle";
-import { ResizingPoint } from "./ResizingPoint";
+import { ResizeBoundary } from "./ShapeBoundary";
 
 export class LineList {
 
@@ -9,15 +9,15 @@ export class LineList {
     public static moveableLine?: Line = undefined;
 
     public lines: Line[] = [];
-    private resizingPoints: ResizingPoint;
+    private resizingPoints: ResizeBoundary;
     private positionIndicator: PositionIndicator;
 
-    private constructor(resizingPoints: ResizingPoint, positionIndicator: PositionIndicator) {
+    private constructor(resizingPoints: ResizeBoundary, positionIndicator: PositionIndicator) {
         this.resizingPoints = resizingPoints;
         this.positionIndicator = positionIndicator;
     }
 
-    public static getInstance(resizingPoints: ResizingPoint, positionIndicator: PositionIndicator): LineList {
+    public static getInstance(resizingPoints: ResizeBoundary, positionIndicator: PositionIndicator): LineList {
 
         if (LineList.instance == undefined) {
             LineList.instance = new LineList(resizingPoints, positionIndicator);

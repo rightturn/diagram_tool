@@ -1,6 +1,4 @@
-import { PositionIndicator } from "./PositionIndicator";
 import { Rectangle, Rectangular } from "./Rectangle";
-import { ResizingPoint } from "./ResizingPoint";
 
 export class RectangleList {
 
@@ -8,18 +6,13 @@ export class RectangleList {
     // public static moveableRectangle?: Rectangle = undefined;
 
     public rectangles: Rectangle[] = [];
-    private resizingPoints: ResizingPoint;
-    private positionIndicator: PositionIndicator;
 
-    private constructor(resizingPoints: ResizingPoint, positionIndicator: PositionIndicator) {
-        this.resizingPoints = resizingPoints;
-        this.positionIndicator = positionIndicator;
-    }
+    private constructor() { }
 
-    public static getInstance(resizingPoints: ResizingPoint, positionIndicator: PositionIndicator): RectangleList {
+    public static getInstance(): RectangleList {
 
         if (RectangleList.instance == undefined) {
-            RectangleList.instance = new RectangleList(resizingPoints, positionIndicator);
+            RectangleList.instance = new RectangleList();
         }
 
         return RectangleList.instance;
@@ -40,7 +33,7 @@ export class RectangleList {
             id: this.getNextIdForRectangle()
         };
 
-        let rectangle = new Rectangle(this.resizingPoints, this.positionIndicator, rectangular);
+        let rectangle = new Rectangle(rectangular);
         this.rectangles.push(rectangle);
 
     }

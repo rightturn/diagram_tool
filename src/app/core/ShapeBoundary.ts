@@ -2,7 +2,7 @@ import { Box } from "./Box";
 import { Point } from "./DrawingShape";
 import { Rectangle } from "./Rectangle";
 
-export class ResizingPoint {
+export class ShapeBoundary {
 
     private activeResizePoint?: ResizeablePoint = undefined;
     private focusedShape?: Rectangle = undefined;
@@ -28,7 +28,6 @@ export class ResizingPoint {
 
     public updateResize(cords: Point) {
 
-        console.log("updateResize");
         if (this.activeResizePoint) {
 
             if (this.activeResizePoint.label == ResizeablePointLabel.RIGHT) {
@@ -48,9 +47,33 @@ export class ResizingPoint {
             }
 
             this.updateBoxBoundary();
-
         }
     }
+
+    public setFocusedShape(rect: Rectangle) {
+        this.focusedShape = rect;
+    }
+
+    public updateBoxBoundary() {
+
+        // let box: BoxBoundaryCordinates = this.getBoxCornerBoundaryCordinates(rect);
+
+        // let top_left: Point = { x: box.left_x, y: box.top_y };
+        // let top_right: Point = { x: box.right_x, y: box.top_y };
+        // let bottom_right: Point = { x: box.right_x, y: box.bottom_y };
+        // let bottom_left: Point = { x: box.left_x, y: box.bottom_y };
+
+        let box = this.getBoxLineCenterBoundaryCordinates(this.focusedShape!);
+
+        let top: ResizeablePoint = { x: box.center_x, y: box.start_y, label: ResizeablePointLabel.TOP };
+        let right: ResizeablePoint = { x: box.end_x, y: box.center_y, label: ResizeablePointLabel.RIGHT };
+        let bottom: ResizeablePoint = { x: box.center_x, y: box.end_y, label: ResizeablePointLabel.BOTTOM };
+        let left: ResizeablePoint = { x: box.start_x, y: box.center_y, label: ResizeablePointLabel.LEFT };
+
+
+        this.points = [top, right, bottom, left];
+    }
+
 
     private resizeFromRight(cords: Point) {
         let new_width = cords.x - this.focusedShape!.x;
@@ -86,30 +109,6 @@ export class ResizingPoint {
             this.focusedShape!.width += old_x - cords.x;
             this.focusedShape!.x = cords.x;
         }
-    }
-
-    public setFocusedShape(rect: Rectangle) {
-        this.focusedShape = rect;
-    }
-
-    public updateBoxBoundary() {
-
-        // let box: BoxBoundaryCordinates = this.getBoxCornerBoundaryCordinates(rect);
-
-        // let top_left: Point = { x: box.left_x, y: box.top_y };
-        // let top_right: Point = { x: box.right_x, y: box.top_y };
-        // let bottom_right: Point = { x: box.right_x, y: box.bottom_y };
-        // let bottom_left: Point = { x: box.left_x, y: box.bottom_y };
-
-        let box = this.getBoxLineCenterBoundaryCordinates(this.focusedShape!);
-
-        let top: ResizeablePoint = { x: box.center_x, y: box.start_y, label: ResizeablePointLabel.TOP };
-        let right: ResizeablePoint = { x: box.end_x, y: box.center_y, label: ResizeablePointLabel.RIGHT };
-        let bottom: ResizeablePoint = { x: box.center_x, y: box.end_y, label: ResizeablePointLabel.BOTTOM };
-        let left: ResizeablePoint = { x: box.start_x, y: box.center_y, label: ResizeablePointLabel.LEFT };
-
-
-        this.points = [top, right, bottom, left];
     }
 
     private getBoxLineCenterBoundaryCordinates(box: Box) {

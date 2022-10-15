@@ -1,6 +1,5 @@
 import { PositionIndicator } from "./PositionIndicator";
-import { ResizingPoint } from "./ResizingPoint";
-import { ShapeMovement } from "./ShapeMovement";
+import { ShapeBoundary } from "./ShapeBoundary";
 
 export abstract class DrawingShape {
 
@@ -10,17 +9,20 @@ export abstract class DrawingShape {
     public color: string = "";
     public classes: string[] = [];
 
-    protected shapeMovement?: ShapeMovement;
-    protected resizingPoints: ResizingPoint;
+    // protected shapeMovement?: ShapeMovement;
+    protected shapeBoundary: ShapeBoundary;
     protected positionIndicator: PositionIndicator;
 
-    constructor(id: number, x: number, y: number, color: string, resizingPoints: ResizingPoint, positionIndicator: PositionIndicator) {
+    protected initialLocation?: Point = undefined;
+    protected htmlElement?: HTMLElement = undefined;
+
+    constructor(id: number, x: number, y: number, color: string) {
         this.x = x;
         this.y = y;
         this.id = id;
-        this.resizingPoints = resizingPoints;
-        this.positionIndicator = positionIndicator;
         this.color = color;
+        this.shapeBoundary = new ShapeBoundary();
+        this.positionIndicator = new PositionIndicator();
     }
 
     public abstract updateMovement(new_location: Point, drag: Point): void;
@@ -34,27 +36,21 @@ export abstract class DrawingShape {
 
     public mouseDownRect(event: Event): void {
 
-        this.positionIndicator.visible = true;
+        this.activate(event);
 
-        let element = (event.target as HTMLElement);
-
-        // this.focusedShape = rect;
-
-        this.shapeMovement!.activate(element);
-
-        this.resizingPoints.updateBoxBoundary();
+        this.shapeBoundary.updateBoxBoundary();
 
         event.preventDefault();
 
     }
 
+
     public mouseUpRect(event: Event) {
 
-        this.shapeMovement!.deactivate();
+        // this.shapeMovement!.deactivate();
+        this.deactivate();
 
-        this.resizingPoints.updateBoxBoundary();
-
-        this.positionIndicator.visible = false;
+        this.shapeBoundary.updateBoxBoundary();
 
         event.preventDefault();
 
@@ -71,7 +67,7 @@ export abstract class DrawingShape {
     }
 
     public deactivateMovement() {
-        this.shapeMovement!.deactivate();
+        this.shapeBoundary!.deactivate();
     }
 
     public clickRect(event: Event) {
@@ -80,9 +76,44 @@ export abstract class DrawingShape {
     }
 
     public inactive() {
-        // this.focusedShape = undefined;
         this.deactivateMovement();
-        this.resizingPoints.inactive();
+        this.shapeBoundary.inactive();
+    }
+
+    private activate(event: Event): void {
+        this.setInitialLocation();
+        this.setPositionIndicatorToVisible();
+        this.setHtmlElement(event);
+        this.addActiveClassOnElement();
+    }
+
+    private deactivate(): void {
+        this.setPositionIndicatorToHidden();
+        this.removeActiveClassFromElement();
+    }
+
+    private setPositionIndicatorToVisible() {
+        this.positionIndicator.visible = true;
+    }
+
+    private setPositionIndicatorToHidden() {
+        this.positionIndicator.visible = false;
+    }
+
+    private setHtmlElement(event: Event) {
+        this.htmlElement = (event.target as HTMLElement);
+    }
+
+    private addActiveClassOnElement() {
+        this.htmlElement?.classList.add("active_rect");
+    }
+
+    private removeActiveClassFromElement() {
+        this.htmlElement?.classList.remove("active_rect");
+    }
+
+    private setInitialLocation() {
+        this.initialLocation = { x: this.x, y: this.y };
     }
 }
 export interface Point {
