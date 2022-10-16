@@ -1,6 +1,19 @@
 import { DrawingShape, Point } from "./DrawingShape";
 export class Rectangle extends DrawingShape {
 
+    public getBoundaryWidth(): number {
+        return this.width;
+    }
+    public setBoundaryWidth(width: number): void {
+        this.width = width;
+    }
+    public getBoundaryHeight(): number {
+        return this.height;
+    }
+    public setBoundaryHeight(height: number): void {
+        this.height = height;
+    }
+
     public height: number;
     public width: number;
 
@@ -37,6 +50,10 @@ export class Rectangle extends DrawingShape {
     public updateMovement(new_location: Point, drag: Point): void {
         this.move(drag);
         this.updateIndicatorPosition(new_location)
+    }
+
+    public updateResize(new_location:Point){
+        this.shapeBoundary.updateResize(new_location);
     }
 
     private updateIndicatorPosition(cord: Point) {

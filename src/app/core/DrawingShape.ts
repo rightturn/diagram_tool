@@ -8,9 +8,10 @@ export abstract class DrawingShape {
     public id: number = 0;
     public color: string = "";
     public classes: string[] = [];
+    private moveable:boolean = false;
 
     // protected shapeMovement?: ShapeMovement;
-    protected shapeBoundary: ShapeBoundary;
+    public shapeBoundary: ShapeBoundary;
     protected positionIndicator: PositionIndicator;
 
     protected initialLocation?: Point = undefined;
@@ -26,7 +27,15 @@ export abstract class DrawingShape {
     }
 
     public abstract updateMovement(new_location: Point, drag: Point): void;
+    public abstract getBoundaryWidth():number;
+    public abstract setBoundaryWidth(width:number):void;
+    public abstract getBoundaryHeight():number;
+    public abstract setBoundaryHeight(height:number):void;
 
+
+    public isMoveable():boolean{
+        return this.moveable;
+    }
     public setFillColor(color: string) {
         // if (this.focusedShape) {
         //     this.focusedShape.color = color;
@@ -66,7 +75,7 @@ export abstract class DrawingShape {
         t.classList.add("rect_border");
     }
 
-    public deactivateMovement() {
+    public deactivateResize() {
         this.shapeBoundary!.deactivate();
     }
 
@@ -76,18 +85,28 @@ export abstract class DrawingShape {
     }
 
     public inactive() {
-        this.deactivateMovement();
+        this.deactivateResize();
         this.shapeBoundary.inactive();
     }
 
     private activate(event: Event): void {
+        this.setAsMoveable();
         this.setInitialLocation();
         this.setPositionIndicatorToVisible();
         this.setHtmlElement(event);
         this.addActiveClassOnElement();
     }
 
+    private setAsMoveable(){
+        this.moveable = true;
+    }
+
+    private setAsNotMoveable(){
+        this.moveable = false;
+    }
+
     private deactivate(): void {
+        this.setAsNotMoveable();
         this.setPositionIndicatorToHidden();
         this.removeActiveClassFromElement();
     }

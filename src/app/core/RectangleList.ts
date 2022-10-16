@@ -1,3 +1,4 @@
+import { Point } from "./DrawingShape";
 import { Rectangle, Rectangular } from "./Rectangle";
 
 export class RectangleList {
@@ -18,6 +19,28 @@ export class RectangleList {
         return RectangleList.instance;
 
     }
+
+    public moveActive(new_location: Point, drag: Point){
+        this.rectangles.forEach(rect => {
+            if(rect.isMoveable()){
+                rect.updateMovement(new_location,drag);
+            }
+            // rect.updateResize(drag);
+        });
+    }
+
+    public resize(new_location:Point){
+        this.rectangles.forEach(rect => {
+            rect.updateResize(new_location);
+        });
+    }
+
+    public deactivateResize(){
+        this.rectangles.forEach(rect => {
+            rect.deactivateResize();
+        });
+    }
+
 
     public add() {
 

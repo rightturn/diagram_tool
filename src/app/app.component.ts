@@ -4,6 +4,7 @@ import { DrawingShape, Point } from './core/DrawingShape';
 import { Line } from './core/Line';
 import { PositionIndicator } from './core/PositionIndicator';
 import { RectangleList } from './core/RectangleList';
+import { ResizeablePoint, ShapeBoundary } from './core/ShapeBoundary';
 // import { ResizeBoundary } from './core/ShapeBoundary';
 
 @Component({
@@ -14,12 +15,11 @@ import { RectangleList } from './core/RectangleList';
 export class AppComponent {
 
   public rectangleList: RectangleList;
-  // public resizingPoints: ResizeBoundary;
+  // public shapeBoundary?: ShapeBoundary = undefined;
   // public positionIndicator: PositionIndicator;
   public line: Line;
 
   public static moveableShape?: DrawingShape = undefined;
-
 
   faAngleLeft = faAngleLeft;
   faAngleRight = faAngleRight;
@@ -59,24 +59,24 @@ export class AppComponent {
   public mouseMove(event: Point) {
     if (this.dragStartLocation) {
       let drag = this.getDragDifference(event);
-      if (AppComponent.moveableShape) {
-        AppComponent.moveableShape.updateMovement(event, drag);
-      }
-      // this.resizingPoints.updateResize(event)
-      this.line.updatePosition(event);
+      this.rectangleList.moveActive(event,drag);
+      this.rectangleList.resize(event);
+      // this.line.updatePosition(event);
     }
   }
 
   public mouseUpContainer(event: Event) {
-    if (AppComponent.moveableShape) {
-      AppComponent.moveableShape.deactivateMovement();
-    }
+    this.rectangleList.deactivateResize();
+    // if (AppComponent.moveableShape) {
+    //   AppComponent.moveableShape.deactivateMovement();
+    // }
     // this.resizingPoints.deactivate();
   }
 
   public mouseDownContainer(event: MouseEvent) {
     this.dragStartLocation = { x: event.offsetX, y: event.offsetY };
   }
+
 
   public mouseOutContainer(event: MouseEvent) {
     // this.rectangle.inactive();

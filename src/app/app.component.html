@@ -4,24 +4,26 @@
     <button (click)="rectangleList.add()">Add Box</button>
 </div>
 <div class="center">
-    <div class="position_indicator" *ngIf="positionIndicator.visible" [style.top]="positionIndicator.top"
+    <!-- <div class="position_indicator" *ngIf="positionIndicator.visible" [style.top]="positionIndicator.top"
         [style.left]="positionIndicator.left">
         {{positionIndicator.position_text}}
-    </div>
+    </div> -->
     <svg-container containerId="svg-element" (mouseDownEvent)="mouseDownContainer($event)"
         (mouseUpEvent)="mouseUpContainer($event)" (mouseOutEvent)="mouseOutContainer($event)"
         (mouseClickEvent)="containerClick($event)" (mouseMoveEvent)="mouseMove($event)" [height]='800'>
 
-        <svg-rect [classes]="rectangle.classes" (mouseDownEvent)="rectangle.mouseDownRect($event)"
-            (clickEvent)="rectangle.clickRect($event)" (mouseUpEvent)="rectangle.mouseUpRect($event)"
-            [height]="rectangle.height" [width]="rectangle.width" [color]="rectangle.color" [x]="rectangle.x"
-            [y]="rectangle.y" *ngFor="let rectangle of rectangleList.rectangles">
-        </svg-rect>
-        <svg-circle (mouseUpEvent)="resizingPoints.mouseUpResizePoint($event,point)"
-            (mouseDownEvent)="resizingPoints.mouseDownResizePoint($event,point)" [x]="point.x" [y]="point.y"
-            [color]='"#29b6f2"' [diameter]="resizingPoints.radiusCircle * 2"
-            *ngFor="let point of resizingPoints.points">
-        </svg-circle>
+        <div *ngFor="let rectangle of rectangleList.rectangles">
+            <svg-rect [classes]="rectangle.classes" (mouseDownEvent)="rectangle.mouseDownRect($event)"
+                (clickEvent)="rectangle.clickRect($event)" (mouseUpEvent)="rectangle.mouseUpRect($event)"
+                [height]="rectangle.height" [width]="rectangle.width" [color]="rectangle.color" [x]="rectangle.x"
+                [y]="rectangle.y" >
+            </svg-rect>
+            <svg-circle (mouseUpEvent)="rectangle.shapeBoundary!.mouseUpResizePoint($event,point)"
+                (mouseDownEvent)="rectangle.shapeBoundary!.mouseDownResizePoint($event,point)" [x]="point.x" [y]="point.y"
+                [color]='"#29b6f2"' [diameter]="rectangle.shapeBoundary!.radiusCircle * 2"
+                *ngFor="let point of rectangle.shapeBoundary!.points">
+            </svg-circle>
+        </div>
 
         <svg-line [classes]="line.classes" [x0]="l.x0" [x1]="l.x1" [y0]="l.y0" (clickEvent)="line.click($event,l)"
             [y1]="l.y1" [borderSize]="line.line_border_size" *ngFor="let l of line.lines"> </svg-line>
