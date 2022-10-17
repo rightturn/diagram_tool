@@ -8,13 +8,13 @@ export abstract class DrawingShape {
     public id: number = 0;
     public color: string = "";
     public classes: string[] = [];
-    private moveable:boolean = false;
-
     public shapeBoundary: ShapeBoundary;
-    protected positionIndicator: PositionIndicator;
 
+    protected positionIndicator: PositionIndicator;
     protected initialLocation?: Point = undefined;
     protected htmlElement?: HTMLElement = undefined;
+
+    private moveable:boolean = false;
 
     constructor(id: number, x: number, y: number, color: string) {
         this.x = x;
@@ -31,10 +31,10 @@ export abstract class DrawingShape {
     public abstract getBoundaryHeight():number;
     public abstract setBoundaryHeight(height:number):void;
 
-
     public isMoveable():boolean{
         return this.moveable;
     }
+
     public setFillColor(color: string) {
         // if (this.focusedShape) {
         //     this.focusedShape.color = color;
@@ -43,25 +43,16 @@ export abstract class DrawingShape {
     }
 
     public mouseDown(event: Event): void {
-
         this.activate(event);
-
         this.shapeBoundary.updateBoxBoundary();
-
         event.preventDefault();
 
     }
 
-
     public mouseUp(event: Event) {
-
-        // this.shapeMovement!.deactivate();
         this.deactivate();
-
         this.shapeBoundary.updateBoxBoundary();
-
         event.preventDefault();
-
     }
 
     public mouseOut(event: MouseEvent) {
@@ -133,7 +124,9 @@ export abstract class DrawingShape {
     private setInitialLocation() {
         this.initialLocation = { x: this.x, y: this.y };
     }
+
 }
+
 export interface Point {
     x: number;
     y: number;

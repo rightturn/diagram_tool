@@ -1,19 +1,6 @@
 import { DrawingShape, Point } from "./DrawingShape";
 export class Rectangle extends DrawingShape {
 
-    public getBoundaryWidth(): number {
-        return this.width;
-    }
-    public setBoundaryWidth(width: number): void {
-        this.width = width;
-    }
-    public getBoundaryHeight(): number {
-        return this.height;
-    }
-    public setBoundaryHeight(height: number): void {
-        this.height = height;
-    }
-
     public height: number;
     public width: number;
 
@@ -21,12 +8,27 @@ export class Rectangle extends DrawingShape {
         super(rectangular.id, rectangular.x, rectangular.y, rectangular.color);
         this.height = rectangular.height;
         this.width = rectangular.width;
-        // this.shapeMovement = new BoxMovement(this.resizingPoints, this);
     }
 
     public override mouseDown(event: Event): void {
         this.shapeBoundary.setFocusedShape(this)
         super.mouseDown(event);
+    }
+
+    public getBoundaryWidth(): number {
+        return this.width;
+    }
+
+    public setBoundaryWidth(width: number): void {
+        this.width = width;
+    }
+
+    public getBoundaryHeight(): number {
+        return this.height;
+    }
+
+    public setBoundaryHeight(height: number): void {
+        this.height = height;
     }
 
     public move(drag: Point): void {
@@ -43,9 +45,7 @@ export class Rectangle extends DrawingShape {
         }
 
         this.shapeBoundary.updateBoxBoundary();
-
     }
-
 
     public updateMovement(new_location: Point, drag: Point): void {
         this.move(drag);
@@ -57,13 +57,11 @@ export class Rectangle extends DrawingShape {
     }
 
     private updateIndicatorPosition(cord: Point) {
-
         if (this.positionIndicator.visible) {
             this.positionIndicator.top = (this.y + this.height + 20) + "px";
             this.positionIndicator.left = (this.x + this.width / 2 - 25) + "px";
             this.positionIndicator.position_text = `${this.x},${this.y}`;
         }
-
     }
 
 }
