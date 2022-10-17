@@ -3,50 +3,44 @@ import { DrawingShape, Point } from "./DrawingShape";
 
 export class ShapeBoundary {
 
-    private activeResizePoint?: ResizeablePoint = undefined;
-    private focusedShape?: DrawingShape = undefined;
-
     public points: ResizeablePoint[] = [];
     public radiusCircle = 5;
 
+    private activeResizePoint?: ResizeablePoint = undefined;
+    private focusedShape?: DrawingShape = undefined;
+
     public mouseUpResizePoint(event: Event, point: ResizeablePoint) {
-        this.deactivate();
+        this.unsetActiveResizePoint();
     }
 
     public mouseDownResizePoint(event: Event, point: ResizeablePoint) {
-        this.activeResizePoint = point;
-        console.log(point);
+        this.setActiveResizePoint(point);
     }
 
-    public deactivate() {
-        this.activeResizePoint = undefined;
+    public stopResizing(){
+        this.unsetActiveResizePoint();
     }
 
     public inactive() {
         this.points = [];
+        this.unsetActiveResizePoint();
     }
 
     public updateResize(cords: Point) {
-
         if (this.activeResizePoint) {
-
             if (this.activeResizePoint.label == ResizeablePointLabel.RIGHT) {
                 this.resizeFromRight(cords);
             }
-
             if (this.activeResizePoint.label == ResizeablePointLabel.LEFT) {
                 this.resizeFromLeft(cords);
             }
-
             if (this.activeResizePoint.label == ResizeablePointLabel.BOTTOM) {
                 this.resizeFromBottom(cords);
             }
-
             if (this.activeResizePoint.label == ResizeablePointLabel.TOP) {
                 this.resizeFromTop(cords);
             }
-
-            this.updateBoxBoundary();
+            this.setBoxBoundary();
         }
     }
 
@@ -54,7 +48,7 @@ export class ShapeBoundary {
         this.focusedShape = shape;
     }
 
-    public updateBoxBoundary() {
+    public setBoxBoundary() {
 
         // let box: BoxBoundaryCordinates = this.getBoxCornerBoundaryCordinates(rect);
 
@@ -70,10 +64,16 @@ export class ShapeBoundary {
         let bottom: ResizeablePoint = { x: box.center_x, y: box.end_y, label: ResizeablePointLabel.BOTTOM };
         let left: ResizeablePoint = { x: box.start_x, y: box.center_y, label: ResizeablePointLabel.LEFT };
 
-
         this.points = [top, right, bottom, left];
     }
 
+    private setActiveResizePoint(point: ResizeablePoint){
+        this.activeResizePoint = point;
+    }
+
+    private unsetActiveResizePoint() {
+        this.activeResizePoint = undefined;
+    }
 
     private resizeFromRight(cords: Point) {
         let new_width = cords.x - this.focusedShape!.x;

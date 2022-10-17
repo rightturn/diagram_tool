@@ -37,7 +37,7 @@ export class RectangleList {
 
     public deactivateResize(){
         this.rectangles.forEach(rect => {
-            rect.deactivateResize();
+            rect.stopResizing();
         });
     }
 

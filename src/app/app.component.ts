@@ -16,8 +16,6 @@ export class AppComponent {
   public circleList: CircleList;
   public line: Line;
 
-  public static moveableShape?: DrawingShape = undefined;
-
   faAngleLeft = faAngleLeft;
   faAngleRight = faAngleRight;
 

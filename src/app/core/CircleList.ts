@@ -37,7 +37,7 @@ export class CircleList {
 
     public deactivateResize(){
         this.circles.forEach(circle => {
-            circle.deactivateResize();
+            circle.stopResizing();
         });
     }
 

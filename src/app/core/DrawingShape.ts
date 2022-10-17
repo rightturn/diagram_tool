@@ -5,6 +5,8 @@ export abstract class DrawingShape {
 
     public x: number = 0;
     public y: number = 0;
+    public height: number = 0;
+    public width: number = 0;
     public id: number = 0;
     public color: string = "";
     public classes: string[] = [];
@@ -25,7 +27,6 @@ export abstract class DrawingShape {
         this.positionIndicator = new PositionIndicator();
     }
 
-    public abstract updateMovement(new_location: Point, drag: Point): void;
     public abstract getBoundaryWidth():number;
     public abstract setBoundaryWidth(width:number):void;
     public abstract getBoundaryHeight():number;
@@ -44,29 +45,29 @@ export abstract class DrawingShape {
 
     public mouseDown(event: Event): void {
         this.activate(event);
-        this.shapeBoundary.updateBoxBoundary();
+        this.shapeBoundary.setFocusedShape(this)
+        this.shapeBoundary.setBoxBoundary();
         event.preventDefault();
-
     }
 
     public mouseUp(event: Event) {
         this.deactivate();
-        this.shapeBoundary.updateBoxBoundary();
+        this.shapeBoundary.setBoxBoundary();
         event.preventDefault();
     }
 
-    public mouseOut(event: MouseEvent) {
-        let t: HTMLElement = (event.target as HTMLElement);
-        t.classList.remove("rect_border");
-    }
+    // public mouseOut(event: MouseEvent) {
+    //     let t: HTMLElement = (event.target as HTMLElement);
+    //     t.classList.remove("rect_border");
+    // }
 
-    public mouseOver(event: MouseEvent) {
-        let t: HTMLElement = (event.target as HTMLElement);
-        t.classList.add("rect_border");
-    }
+    // public mouseOver(event: MouseEvent) {
+    //     let t: HTMLElement = (event.target as HTMLElement);
+    //     t.classList.add("rect_border");
+    // }
 
-    public deactivateResize() {
-        this.shapeBoundary!.deactivate();
+    public stopResizing() {
+        this.shapeBoundary!.stopResizing();
     }
 
     public click(event: Event) {
@@ -74,11 +75,42 @@ export abstract class DrawingShape {
         event.preventDefault();
     }
 
-    public inactive() {
-        this.deactivateResize();
-        this.shapeBoundary.inactive();
+    // public inactive() {
+    //     this.shapeBoundary.inactive();
+    // }
+
+    public move(drag: Point): void {
+
+        let new_x = this.initialLocation!.x + drag.x;
+        let new_y = this.initialLocation!.y + drag.y;
+
+        if (new_x >= 0) {
+            this.x = new_x;
+        }
+
+        if (new_y >= 0) {
+            this.y = new_y;
+        }
+
+        this.shapeBoundary.setBoxBoundary();
     }
 
+    public updateMovement(new_location: Point, drag: Point): void {
+        this.move(drag);
+        this.updateIndicatorPosition(new_location)
+    }
+
+    public updateResize(new_location:Point){
+        this.shapeBoundary.updateResize(new_location);
+    }
+
+    private updateIndicatorPosition(cord: Point) {
+        if (this.positionIndicator.visible) {
+            this.positionIndicator.top = (this.y + this.height + 20) + "px";
+            this.positionIndicator.left = (this.x + this.width / 2 - 25) + "px";
+            this.positionIndicator.position_text = `${this.x},${this.y}`;
+        }
+    }
     private activate(event: Event): void {
         this.setAsMoveable();
         this.setInitialLocation();
@@ -87,18 +119,22 @@ export abstract class DrawingShape {
         this.addActiveClassOnElement();
     }
 
-    private setAsMoveable(){
-        this.moveable = true;
-    }
-
-    private setAsNotMoveable(){
-        this.moveable = false;
-    }
-
     private deactivate(): void {
         this.setAsNotMoveable();
         this.setPositionIndicatorToHidden();
         this.removeActiveClassFromElement();
+    }
+
+    private setAsMoveable(){
+        this.moveable = true;
+    }
+
+    private setInitialLocation() {
+        this.initialLocation = { x: this.x, y: this.y };
+    }
+
+    private setAsNotMoveable(){
+        this.moveable = false;
     }
 
     private setPositionIndicatorToVisible() {
@@ -119,10 +155,6 @@ export abstract class DrawingShape {
 
     private removeActiveClassFromElement() {
         this.htmlElement?.classList.remove("active_rect");
-    }
-
-    private setInitialLocation() {
-        this.initialLocation = { x: this.x, y: this.y };
     }
 
 }
