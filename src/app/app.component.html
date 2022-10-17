@@ -2,6 +2,7 @@
 </div>
 <div class="left">
     <button (click)="rectangleList.add()">Add Box</button>
+    <button (click)="circleList.add()">Add Circle</button>
 </div>
 <div class="center">
     <!-- <div class="position_indicator" *ngIf="positionIndicator.visible" [style.top]="positionIndicator.top"
@@ -13,8 +14,8 @@
         (mouseClickEvent)="containerClick($event)" (mouseMoveEvent)="mouseMove($event)" [height]='800'>
 
         <div *ngFor="let rectangle of rectangleList.rectangles">
-            <svg-rect [classes]="rectangle.classes" (mouseDownEvent)="rectangle.mouseDownRect($event)"
-                (clickEvent)="rectangle.clickRect($event)" (mouseUpEvent)="rectangle.mouseUpRect($event)"
+            <svg-rect [classes]="rectangle.classes" (mouseDownEvent)="rectangle.mouseDown($event)"
+                (clickEvent)="rectangle.click($event)" (mouseUpEvent)="rectangle.mouseUp($event)"
                 [height]="rectangle.height" [width]="rectangle.width" [color]="rectangle.color" [x]="rectangle.x"
                 [y]="rectangle.y" >
             </svg-rect>
@@ -22,6 +23,19 @@
                 (mouseDownEvent)="rectangle.shapeBoundary!.mouseDownResizePoint($event,point)" [x]="point.x" [y]="point.y"
                 [color]='"#29b6f2"' [diameter]="rectangle.shapeBoundary!.radiusCircle * 2"
                 *ngFor="let point of rectangle.shapeBoundary!.points">
+            </svg-circle>
+        </div>
+
+        <div *ngFor="let circle of circleList.circles">
+            <svg-circle [classes]="circle.classes" (mouseDownEvent)="circle.mouseDown($event)"
+                (clickEvent)="circle.click($event)" (mouseUpEvent)="circle.mouseUp($event)"
+                [color]="circle.color" [x]="circle.x" 
+                [y]="circle.y" [diameter]="circle.diameter" >
+            </svg-circle>
+            <svg-circle (mouseUpEvent)="circle.shapeBoundary!.mouseUpResizePoint($event,point)"
+                (mouseDownEvent)="circle.shapeBoundary!.mouseDownResizePoint($event,point)" [x]="point.x" [y]="point.y"
+                [color]='"#29b6f2"' [diameter]="circle.shapeBoundary!.radiusCircle * 2"
+                *ngFor="let point of circle.shapeBoundary!.points">
             </svg-circle>
         </div>
 

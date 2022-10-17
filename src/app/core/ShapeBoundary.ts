@@ -1,6 +1,5 @@
 import { Box } from "./Box";
 import { DrawingShape, Point } from "./DrawingShape";
-import { Rectangle } from "./Rectangle";
 
 export class ShapeBoundary {
 
@@ -51,8 +50,8 @@ export class ShapeBoundary {
         }
     }
 
-    public setFocusedShape(rect: Rectangle) {
-        this.focusedShape = rect;
+    public setFocusedShape(shape: DrawingShape) {
+        this.focusedShape = shape;
     }
 
     public updateBoxBoundary() {

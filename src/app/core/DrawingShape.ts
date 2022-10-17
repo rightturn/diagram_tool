@@ -10,7 +10,6 @@ export abstract class DrawingShape {
     public classes: string[] = [];
     private moveable:boolean = false;
 
-    // protected shapeMovement?: ShapeMovement;
     public shapeBoundary: ShapeBoundary;
     protected positionIndicator: PositionIndicator;
 
@@ -43,7 +42,7 @@ export abstract class DrawingShape {
         this.color = color;
     }
 
-    public mouseDownRect(event: Event): void {
+    public mouseDown(event: Event): void {
 
         this.activate(event);
 
@@ -54,7 +53,7 @@ export abstract class DrawingShape {
     }
 
 
-    public mouseUpRect(event: Event) {
+    public mouseUp(event: Event) {
 
         // this.shapeMovement!.deactivate();
         this.deactivate();
@@ -65,12 +64,12 @@ export abstract class DrawingShape {
 
     }
 
-    public mouseOutRect(event: MouseEvent) {
+    public mouseOut(event: MouseEvent) {
         let t: HTMLElement = (event.target as HTMLElement);
         t.classList.remove("rect_border");
     }
 
-    public mouseOverRect(event: MouseEvent) {
+    public mouseOver(event: MouseEvent) {
         let t: HTMLElement = (event.target as HTMLElement);
         t.classList.add("rect_border");
     }
@@ -79,7 +78,7 @@ export abstract class DrawingShape {
         this.shapeBoundary!.deactivate();
     }
 
-    public clickRect(event: Event) {
+    public click(event: Event) {
         event.stopPropagation();
         event.preventDefault();
     }
