@@ -1,4 +1,5 @@
 import { PositionIndicator } from "./PositionIndicator";
+import { RectangleList } from "./RectangleList";
 import { ShapeBoundary } from "./ShapeBoundary";
 
 export abstract class DrawingShape {
@@ -75,9 +76,9 @@ export abstract class DrawingShape {
         event.preventDefault();
     }
 
-    // public inactive() {
-    //     this.shapeBoundary.inactive();
-    // }
+    public inactive() {
+        this.shapeBoundary.inactive();
+    }
 
     public move(drag: Point): void {
 

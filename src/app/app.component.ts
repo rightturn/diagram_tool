@@ -47,7 +47,8 @@ export class AppComponent {
   }
 
   public containerClick(event: Event) {
-    // this.rectangle.inactive();
+    this.rectangleList.inactiveAll();
+    this.circleList.inactiveAll();
   }
 
   public mouseMove(event: Point) {

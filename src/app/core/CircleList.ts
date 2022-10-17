@@ -4,7 +4,6 @@ import { Point } from "./DrawingShape";
 export class CircleList {
 
     private static instance?: CircleList = undefined;
-    // public static moveableRectangle?: Rectangle = undefined;
 
     public circles: Circle[] = [];
 
@@ -25,7 +24,12 @@ export class CircleList {
             if(circle.isMoveable()){
                 circle.updateMovement(new_location,drag);
             }
-            // rect.updateResize(drag);
+        });
+    }
+
+    public inactiveAll(){
+        this.circles.forEach(shape => {
+            shape.inactive();
         });
     }
 

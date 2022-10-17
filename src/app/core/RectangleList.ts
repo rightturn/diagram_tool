@@ -29,6 +29,12 @@ export class RectangleList {
         });
     }
 
+    public inactiveAll(){
+        this.rectangles.forEach(shape => {
+            shape.inactive();
+        });
+    }
+
     public resize(new_location:Point){
         this.rectangles.forEach(rect => {
             rect.updateResize(new_location);
