@@ -1,5 +1,4 @@
 import { PositionIndicator } from "./PositionIndicator";
-import { RectangleList } from "./RectangleList";
 import { ShapeBoundary } from "./ShapeBoundary";
 
 export abstract class DrawingShape {
@@ -17,7 +16,7 @@ export abstract class DrawingShape {
     protected initialLocation?: Point = undefined;
     protected htmlElement?: HTMLElement = undefined;
 
-    private moveable:boolean = false;
+    private moveable: boolean = false;
 
     constructor(id: number, x: number, y: number, color: string) {
         this.x = x;
@@ -28,12 +27,12 @@ export abstract class DrawingShape {
         this.positionIndicator = new PositionIndicator();
     }
 
-    public abstract getBoundaryWidth():number;
-    public abstract setBoundaryWidth(width:number):void;
-    public abstract getBoundaryHeight():number;
-    public abstract setBoundaryHeight(height:number):void;
+    public abstract getBoundaryWidth(): number;
+    public abstract setBoundaryWidth(width: number): void;
+    public abstract getBoundaryHeight(): number;
+    public abstract setBoundaryHeight(height: number): void;
 
-    public isMoveable():boolean{
+    public isMoveable(): boolean {
         return this.moveable;
     }
 
@@ -45,6 +44,7 @@ export abstract class DrawingShape {
     }
 
     public mouseDown(event: Event): void {
+        console.log("mouse down called");
         this.activate(event);
         this.shapeBoundary.setFocusedShape(this)
         this.shapeBoundary.setBoxBoundary();
@@ -86,11 +86,11 @@ export abstract class DrawingShape {
         let new_y = this.initialLocation!.y + drag.y;
 
         if (new_x >= 0) {
-            this.x = new_x;
+            this.setX(new_x);
         }
 
         if (new_y >= 0) {
-            this.y = new_y;
+            this.setY(new_y);
         }
 
         this.shapeBoundary.setBoxBoundary();
@@ -101,8 +101,16 @@ export abstract class DrawingShape {
         this.updateIndicatorPosition(new_location)
     }
 
-    public updateResize(new_location:Point){
+    public updateResize(new_location: Point) {
         this.shapeBoundary.updateResize(new_location);
+    }
+
+    protected setX(x: number) {
+        this.x = x;
+    }
+
+    protected setY(y: number) {
+        this.y = y;
     }
 
     private updateIndicatorPosition(cord: Point) {
@@ -126,7 +134,7 @@ export abstract class DrawingShape {
         this.removeActiveClassFromElement();
     }
 
-    private setAsMoveable(){
+    private setAsMoveable() {
         this.moveable = true;
     }
 
@@ -134,7 +142,7 @@ export abstract class DrawingShape {
         this.initialLocation = { x: this.x, y: this.y };
     }
 
-    private setAsNotMoveable(){
+    private setAsNotMoveable() {
         this.moveable = false;
     }
 

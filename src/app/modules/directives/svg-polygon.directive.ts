@@ -38,6 +38,8 @@ export class SvgPolygonDirective implements AfterViewChecked, OnChanges, OnDestr
   @Output() doubleClickEvent: EventEmitter<Event> = new EventEmitter();
   @Output() mouseOverEvent: EventEmitter<Event> = new EventEmitter();
   @Output() mouseOutEvent: EventEmitter<Event> = new EventEmitter();
+  @Output() mouseDownEvent: EventEmitter<Event> = new EventEmitter();
+  @Output() mouseUpEvent: EventEmitter<Event> = new EventEmitter();
   @Output() onInitialize: EventEmitter<Polygon> = new EventEmitter();
 
   /**
@@ -118,7 +120,9 @@ export class SvgPolygonDirective implements AfterViewChecked, OnChanges, OnDestr
       .on('click', (evt: Event) => this.clickEvent.emit(evt)) // Assign click event
       .on('dblclick', (evt: Event) => this.doubleClickEvent.emit(evt)) // Assign double click event
       .on('mouseover', (evt: Event) => this.mouseOverEvent.emit(evt)) // Assign mouse over event
-      .on('mouseout', (evt: Event) => this.mouseOutEvent.emit(evt)); // Assign mouse out event
+      .on('mouseout', (evt: Event) => this.mouseOutEvent.emit(evt)) // Assign mouse out event
+      .on('mousedown', (evt: Event) => this.mouseDownEvent.emit(evt)) // Assign mouse down event
+      .on('mouseup', (evt: Event) => this.mouseUpEvent.emit(evt)); // Assign mouse up event
 
     // Let's set element in a correct position
     this.setCorrectPosition();

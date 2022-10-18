@@ -4,6 +4,7 @@ import { CircleList } from './core/CircleList';
 import { DrawingShape, Point } from './core/DrawingShape';
 import { Line } from './core/Line';
 import { RectangleList } from './core/RectangleList';
+import { TriangleList } from './core/TriangleList';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ export class AppComponent {
 
   public rectangleList: RectangleList;
   public circleList: CircleList;
+  public triangleList: TriangleList;
   public line: Line;
 
   faAngleLeft = faAngleLeft;
@@ -30,6 +32,7 @@ export class AppComponent {
 
     this.rectangleList = RectangleList.getInstance();
     this.circleList = CircleList.getInstance();
+    this.triangleList = TriangleList.getInstance();
 
     this.all_colors = [["#ffa347", "#ff4b47", "#ff4b92", "#ff4b1a", "#2c4b1a", "#f1173a", "#21463a", "#2146b6"],
     ["#FFA07A", "#B22222", "#FFA500", "#BDB76B", "#228B22", "#3CB371", "#48D1CC", "#008B8B"]];
@@ -54,10 +57,13 @@ export class AppComponent {
   public mouseMove(event: Point) {
     if (this.dragStartLocation) {
       let drag = this.getDragDifference(event);
-      this.rectangleList.moveActive(event,drag);
+      this.rectangleList.moveActive(event, drag);
       this.rectangleList.resize(event);
 
-      this.circleList.moveActive(event,drag);
+      this.triangleList.moveActive(event, drag);
+      this.triangleList.resize(event);
+
+      this.circleList.moveActive(event, drag);
       this.circleList.resize(event);
       // this.line.updatePosition(event);
     }
