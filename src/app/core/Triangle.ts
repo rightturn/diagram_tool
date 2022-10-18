@@ -33,7 +33,7 @@ export class Triangle extends DrawingShape {
 
     public setBoundaryWidth(width: number): void {
         this.width = width;
-        this.p2.x = width;
+        this.p2.x = this.p1.x + width;
     }
 
     public getBoundaryHeight(): number {
@@ -42,17 +42,18 @@ export class Triangle extends DrawingShape {
 
     public setBoundaryHeight(height: number): void {
         this.height = height;
-        this.p3.y = height;
+        this.p3.y = this.p1.y + height;
+        this.p2.y = this.p1.y + height / 2;
     }
 
-    protected override setX(x: number): void {
+    public override setX(x: number): void {
         super.setX(x);
         this.p1.x = x;
         this.p2.x = x + this.width;
         this.p3.x = x;
     }
 
-    protected override setY(y: number): void {
+    public override setY(y: number): void {
         super.setY(y);
         this.p1.y = y;
         this.p2.y = y + this.height / 2;

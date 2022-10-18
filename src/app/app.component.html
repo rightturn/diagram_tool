@@ -17,8 +17,8 @@
         <div *ngFor="let rectangle of rectangleList.rectangles">
             <svg-rect [classes]="rectangle.classes" (mouseDownEvent)="rectangle.mouseDown($event)"
                 (clickEvent)="rectangle.click($event)" (mouseUpEvent)="rectangle.mouseUp($event)"
-                [height]="rectangle.height" [width]="rectangle.width" [color]="rectangle.color" [x]="rectangle.x"
-                [y]="rectangle.y">
+                [height]="rectangle.getBoundaryHeight()" [width]="rectangle.getBoundaryWidth()"
+                [color]="rectangle.color" [x]="rectangle.getX()" [y]="rectangle.getY()">
             </svg-rect>
             <svg-circle (mouseUpEvent)="rectangle.shapeBoundary!.mouseUpResizePoint($event,point)"
                 (mouseDownEvent)="rectangle.shapeBoundary!.mouseDownResizePoint($event,point)" [x]="point.x"
@@ -41,7 +41,7 @@
         <div *ngFor="let circle of circleList.circles">
             <svg-circle [classes]="circle.classes" (mouseDownEvent)="circle.mouseDown($event)"
                 (clickEvent)="circle.click($event)" (mouseUpEvent)="circle.mouseUp($event)" [color]="circle.color"
-                [x]="circle.x" [y]="circle.y" [diameter]="circle.diameter">
+                [x]="circle.getX()" [y]="circle.getY()" [diameter]="circle.diameter">
             </svg-circle>
             <svg-circle (mouseUpEvent)="circle.shapeBoundary!.mouseUpResizePoint($event,point)"
                 (mouseDownEvent)="circle.shapeBoundary!.mouseDownResizePoint($event,point)" [x]="point.x" [y]="point.y"

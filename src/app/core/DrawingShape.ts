@@ -3,10 +3,10 @@ import { ShapeBoundary } from "./ShapeBoundary";
 
 export abstract class DrawingShape {
 
-    public x: number = 0;
-    public y: number = 0;
-    public height: number = 0;
-    public width: number = 0;
+    protected x: number = 0;
+    protected y: number = 0;
+    protected height: number = 0;
+    protected width: number = 0;
     public id: number = 0;
     public color: string = "";
     public classes: string[] = [];
@@ -105,12 +105,20 @@ export abstract class DrawingShape {
         this.shapeBoundary.updateResize(new_location);
     }
 
-    protected setX(x: number) {
+    public setX(x: number) {
         this.x = x;
     }
 
-    protected setY(y: number) {
+    public getX(): number {
+        return this.x;
+    }
+
+    public setY(y: number) {
         this.y = y;
+    }
+
+    public getY(): number {
+        return this.y;
     }
 
     private updateIndicatorPosition(cord: Point) {

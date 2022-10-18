@@ -72,6 +72,7 @@ export class AppComponent {
   public mouseUpContainer(event: Event) {
     this.rectangleList.deactivateResize();
     this.circleList.deactivateResize();
+    this.triangleList.deactivateResize();
   }
 
   public mouseDownContainer(event: MouseEvent) {
