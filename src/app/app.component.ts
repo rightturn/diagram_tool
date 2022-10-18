@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { faCoffee, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { CircleList } from './core/CircleList';
 import { DrawingShape, Point } from './core/DrawingShape';
 import { Line } from './core/Line';
-import { PositionIndicator } from './core/PositionIndicator';
 import { RectangleList } from './core/RectangleList';
-// import { ResizeBoundary } from './core/ShapeBoundary';
 
 @Component({
   selector: 'app-root',
@@ -14,12 +13,8 @@ import { RectangleList } from './core/RectangleList';
 export class AppComponent {
 
   public rectangleList: RectangleList;
-  // public resizingPoints: ResizeBoundary;
-  // public positionIndicator: PositionIndicator;
+  public circleList: CircleList;
   public line: Line;
-
-  public static moveableShape?: DrawingShape = undefined;
-
 
   faAngleLeft = faAngleLeft;
   faAngleRight = faAngleRight;
@@ -33,9 +28,8 @@ export class AppComponent {
   constructor() {
     this.line = new Line();
 
-    // this.resizingPoints = ResizeBoundary.getInstance();
-    // this.positionIndicator = PositionIndicator.getInstance();
     this.rectangleList = RectangleList.getInstance();
+    this.circleList = CircleList.getInstance();
 
     this.all_colors = [["#ffa347", "#ff4b47", "#ff4b92", "#ff4b1a", "#2c4b1a", "#f1173a", "#21463a", "#2146b6"],
     ["#FFA07A", "#B22222", "#FFA500", "#BDB76B", "#228B22", "#3CB371", "#48D1CC", "#008B8B"]];
@@ -53,34 +47,33 @@ export class AppComponent {
   }
 
   public containerClick(event: Event) {
-    // this.rectangle.inactive();
+    this.rectangleList.inactiveAll();
+    this.circleList.inactiveAll();
   }
 
   public mouseMove(event: Point) {
     if (this.dragStartLocation) {
       let drag = this.getDragDifference(event);
-      if (AppComponent.moveableShape) {
-        AppComponent.moveableShape.updateMovement(event, drag);
-      }
-      // this.resizingPoints.updateResize(event)
-      this.line.updatePosition(event);
+      this.rectangleList.moveActive(event,drag);
+      this.rectangleList.resize(event);
+
+      this.circleList.moveActive(event,drag);
+      this.circleList.resize(event);
+      // this.line.updatePosition(event);
     }
   }
 
   public mouseUpContainer(event: Event) {
-    if (AppComponent.moveableShape) {
-      AppComponent.moveableShape.deactivateMovement();
-    }
-    // this.resizingPoints.deactivate();
+    this.rectangleList.deactivateResize();
+    this.circleList.deactivateResize();
   }
 
   public mouseDownContainer(event: MouseEvent) {
     this.dragStartLocation = { x: event.offsetX, y: event.offsetY };
   }
 
+
   public mouseOutContainer(event: MouseEvent) {
-    // this.rectangle.inactive();
-    // this.rectangle.deactivateMovement();
   }
 
   private getDragDifference(new_location: Point): Point {

@@ -1,60 +1,54 @@
 import { Box } from "./Box";
-import { Point } from "./DrawingShape";
-import { Rectangle } from "./Rectangle";
+import { DrawingShape, Point } from "./DrawingShape";
 
 export class ShapeBoundary {
-
-    private activeResizePoint?: ResizeablePoint = undefined;
-    private focusedShape?: Rectangle = undefined;
 
     public points: ResizeablePoint[] = [];
     public radiusCircle = 5;
 
+    private activeResizePoint?: ResizeablePoint = undefined;
+    private focusedShape?: DrawingShape = undefined;
+
     public mouseUpResizePoint(event: Event, point: ResizeablePoint) {
-        this.deactivate();
+        this.unsetActiveResizePoint();
     }
 
     public mouseDownResizePoint(event: Event, point: ResizeablePoint) {
-        this.activeResizePoint = point;
+        this.setActiveResizePoint(point);
     }
 
-    public deactivate() {
-        this.activeResizePoint = undefined;
+    public stopResizing(){
+        this.unsetActiveResizePoint();
     }
 
     public inactive() {
         this.points = [];
+        this.unsetActiveResizePoint();
     }
 
     public updateResize(cords: Point) {
-
         if (this.activeResizePoint) {
-
             if (this.activeResizePoint.label == ResizeablePointLabel.RIGHT) {
                 this.resizeFromRight(cords);
             }
-
             if (this.activeResizePoint.label == ResizeablePointLabel.LEFT) {
                 this.resizeFromLeft(cords);
             }
-
             if (this.activeResizePoint.label == ResizeablePointLabel.BOTTOM) {
                 this.resizeFromBottom(cords);
             }
-
             if (this.activeResizePoint.label == ResizeablePointLabel.TOP) {
                 this.resizeFromTop(cords);
             }
-
-            this.updateBoxBoundary();
+            this.setBoxBoundary();
         }
     }
 
-    public setFocusedShape(rect: Rectangle) {
-        this.focusedShape = rect;
+    public setFocusedShape(shape: DrawingShape) {
+        this.focusedShape = shape;
     }
 
-    public updateBoxBoundary() {
+    public setBoxBoundary() {
 
         // let box: BoxBoundaryCordinates = this.getBoxCornerBoundaryCordinates(rect);
 
@@ -63,63 +57,63 @@ export class ShapeBoundary {
         // let bottom_right: Point = { x: box.right_x, y: box.bottom_y };
         // let bottom_left: Point = { x: box.left_x, y: box.bottom_y };
 
-        let box = this.getBoxLineCenterBoundaryCordinates(this.focusedShape!);
+        let box = this.getBoxLineCenterBoundaryCordinates();
 
         let top: ResizeablePoint = { x: box.center_x, y: box.start_y, label: ResizeablePointLabel.TOP };
         let right: ResizeablePoint = { x: box.end_x, y: box.center_y, label: ResizeablePointLabel.RIGHT };
         let bottom: ResizeablePoint = { x: box.center_x, y: box.end_y, label: ResizeablePointLabel.BOTTOM };
         let left: ResizeablePoint = { x: box.start_x, y: box.center_y, label: ResizeablePointLabel.LEFT };
 
-
         this.points = [top, right, bottom, left];
     }
 
+    private setActiveResizePoint(point: ResizeablePoint){
+        this.activeResizePoint = point;
+    }
+
+    private unsetActiveResizePoint() {
+        this.activeResizePoint = undefined;
+    }
 
     private resizeFromRight(cords: Point) {
         let new_width = cords.x - this.focusedShape!.x;
-        this.focusedShape!.width = new_width >= (this.radiusCircle * 2) ? new_width : this.focusedShape!.width;
+        let updated_width = new_width >= (this.radiusCircle * 2) ? new_width : this.focusedShape!.getBoundaryWidth();
+        this.focusedShape!.setBoundaryWidth(updated_width);
     }
 
     private resizeFromTop(cords: Point) {
         let old_y = this.focusedShape!.y;
-        if (cords.y > old_y) {
-            if (this.focusedShape!.height >= this.radiusCircle * 2) {
-                this.focusedShape!.height -= cords.y - old_y;
-                this.focusedShape!.y = cords.y;
-            }
-        } else {
-            this.focusedShape!.height += old_y - cords.y;
+        let updated_height = this.focusedShape!.getBoundaryHeight() - cords.y + old_y;
+        if(updated_height > this.radiusCircle * 2){
+            this.focusedShape!.setBoundaryHeight(updated_height);
             this.focusedShape!.y = cords.y;
         }
     }
 
     private resizeFromBottom(cords: Point) {
         let new_height = cords.y - this.focusedShape!.y;
-        this.focusedShape!.height = new_height >= (this.radiusCircle * 2) ? new_height : this.focusedShape!.height;
+        let updated_height = new_height >= (this.radiusCircle * 2) ? new_height : this.focusedShape!.getBoundaryHeight();
+        this.focusedShape!.setBoundaryHeight(updated_height);
     }
 
     private resizeFromLeft(cords: Point) {
         let old_x = this.focusedShape!.x;
-        if (cords.x > old_x) {
-            if (this.focusedShape!.width >= this.radiusCircle * 2) {
-                this.focusedShape!.width -= cords.x - old_x;
-                this.focusedShape!.x = cords.x;
-            }
-        } else {
-            this.focusedShape!.width += old_x - cords.x;
+        let updated_width =  this.focusedShape!.getBoundaryWidth() + old_x - cords.x;
+        if(updated_width > this.radiusCircle * 2){
+            this.focusedShape!.setBoundaryWidth(updated_width);
             this.focusedShape!.x = cords.x;
         }
     }
 
-    private getBoxLineCenterBoundaryCordinates(box: Box) {
+    private getBoxLineCenterBoundaryCordinates() {
 
-        let start_x = box.x - this.radiusCircle;
-        let center_x = start_x + box.width / 2;
-        let end_x = start_x + box.width;
+        let start_x = this.focusedShape!.x - this.radiusCircle;
+        let center_x = start_x + this.focusedShape!.getBoundaryWidth() / 2;
+        let end_x = start_x + this.focusedShape!.getBoundaryWidth();
 
-        let start_y = box.y - this.radiusCircle;
-        let center_y = start_y + box.height / 2;
-        let end_y = start_y + box.height;
+        let start_y = this.focusedShape!.y - this.radiusCircle;
+        let center_y = start_y + this.focusedShape!.getBoundaryHeight() / 2;
+        let end_y = start_y + this.focusedShape!.getBoundaryHeight();
 
         return {
             start_x, center_x, end_x, start_y, center_y, end_y
