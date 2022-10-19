@@ -1,9 +1,9 @@
 <div class="top">
 </div>
 <div class="left">
-    <button (click)="rectangleList.add()">Add Box</button>
-    <button (click)="circleList.add()">Add Circle</button>
-    <button (click)="triangleList.add()">Add Triangle</button>
+    <button (click)="drawingShapeList.addRectangle()">Add Box</button>
+    <button (click)="drawingShapeList.addCircle()">Add Circle</button>
+    <button (click)="drawingShapeList.addTriangle()">Add Triangle</button>
 </div>
 <div class="center">
     <!-- <div class="position_indicator" *ngIf="positionIndicator.visible" [style.top]="positionIndicator.top"
@@ -14,7 +14,7 @@
         (mouseUpEvent)="mouseUpContainer($event)" (mouseOutEvent)="mouseOutContainer($event)"
         (mouseClickEvent)="containerClick($event)" (mouseMoveEvent)="mouseMove($event)" [height]='800'>
 
-        <div *ngFor="let rectangle of rectangleList.rectangles">
+        <div *ngFor="let rectangle of drawingShapeList.rectangles">
             <svg-rect [classes]="rectangle.classes" (mouseDownEvent)="rectangle.mouseDown($event)"
                 (clickEvent)="rectangle.click($event)" (mouseUpEvent)="rectangle.mouseUp($event)"
                 [height]="rectangle.getBoundaryHeight()" [width]="rectangle.getBoundaryWidth()"
@@ -27,7 +27,7 @@
             </svg-circle>
         </div>
 
-        <div *ngFor="let triangle of triangleList.triangles">
+        <div *ngFor="let triangle of drawingShapeList.triangles">
             <svg-polygon [classes]="triangle.classes" (mouseDownEvent)="triangle.mouseDown($event)"
                 (clickEvent)="triangle.click($event)" (mouseUpEvent)="triangle.mouseUp($event)" [borderSize]="2"
                 [points]="[triangle.getPoint1(), triangle.getPoint2(), triangle.getPoint3()]"></svg-polygon>
@@ -38,7 +38,7 @@
             </svg-circle>
         </div>
 
-        <div *ngFor="let circle of circleList.circles">
+        <div *ngFor="let circle of drawingShapeList.circles">
             <svg-circle [classes]="circle.classes" (mouseDownEvent)="circle.mouseDown($event)"
                 (clickEvent)="circle.click($event)" (mouseUpEvent)="circle.mouseUp($event)" [color]="circle.color"
                 [x]="circle.getX()" [y]="circle.getY()" [diameter]="circle.diameter">
@@ -49,13 +49,6 @@
                 *ngFor="let point of circle.shapeBoundary!.points">
             </svg-circle>
         </div>
-
-        <svg-line [classes]="line.classes" [x0]="l.x0" [x1]="l.x1" [y0]="l.y0" (clickEvent)="line.click($event,l)"
-            [y1]="l.y1" [borderSize]="line.line_border_size" *ngFor="let l of line.lines"> </svg-line>
-        <svg-circle [x]="l_point.x" [y]="l_point.y" [diameter]="line.diameterCircle"
-            (mouseDownEvent)="line.mouseDown($event,l_point)" (mouseUpEvent)="line.mouseUp($event)" [color]='"#29b6f2"'
-            *ngFor="let l_point of line.points">
-        </svg-circle>
 
     </svg-container>
 </div>

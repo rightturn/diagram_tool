@@ -2,9 +2,9 @@ import { DrawingShape, Point } from "./DrawingShape";
 
 export class Triangle extends DrawingShape {
 
-    public p1: Point;
-    public p2: Point;
-    public p3: Point;
+    private p1: Point;
+    private p2: Point;
+    private p3: Point;
 
     constructor(triangular: Triangular) {
         super(triangular.id, triangular.p1.x, triangular.p1.y, triangular.color);
