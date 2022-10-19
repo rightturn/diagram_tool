@@ -1,4 +1,3 @@
-import { Box } from "./Box";
 import { DrawingShape, Point } from "./DrawingShape";
 
 export class ShapeBoundary {
@@ -145,6 +144,12 @@ interface BoxBoundaryCordinates {
     right_x: number;
     top_y: number;
     bottom_y: number;
+}
+export interface Box {
+    height: number;
+    width: number;
+    x: number;
+    y: number;
 }
 
 enum ResizeablePointLabel {
