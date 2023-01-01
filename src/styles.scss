@@ -1,8 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-rect {
+rect,circle,polygon {
     stroke: rgb(0, 0, 0);
+}
+
+.boundary{
+    fill: none;
+    stroke: #00a8ff;
+    stroke-dasharray: 3 3;
 }
 
 .moveable:hover{
@@ -16,4 +22,22 @@ rect {
 .position_indicator{
     border:1px solid black;
     position: absolute;
+}
+
+.context_menu{
+    border:1px solid black;
+    position: absolute;
+    background-color: white;
+    z-index:100;
+}
+
+tr.mxPopupMenuItem{
+    color:black;
+    cursor:pointer;
+    padding:7px;
+    font-size:10pt;
+}
+
+tr.mxPopupMenuItem:hover{
+    background-color: #eeeeee;
 }

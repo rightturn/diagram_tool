@@ -1,13 +1,14 @@
 import { DrawingShape, Point } from "./DrawingShape";
 export class Circle extends DrawingShape {
 
-    public diameter:number;
+    public diameter: number;
 
     constructor(circular: Circular) {
         super(circular.id, circular.x, circular.y, circular.color);
         this.height = circular.diameter;
         this.width = circular.diameter;
         this.diameter = circular.diameter;
+        this.name = "circle";
     }
 
     public getBoundaryWidth(): number {
@@ -36,6 +37,6 @@ export interface Circular {
     color: string;
     x: number;
     y: number;
-    diameter:number;
+    diameter: number;
     id: number;
 }

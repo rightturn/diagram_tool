@@ -2,17 +2,19 @@ import { DrawingShape, Point } from "./DrawingShape";
 
 export class Triangle extends DrawingShape {
 
-    public p1: Point;
-    public p2: Point;
-    public p3: Point;
+    private p1: Point;
+    private p2: Point;
+    private p3: Point;
 
     constructor(triangular: Triangular) {
         super(triangular.id, triangular.p1.x, triangular.p1.y, triangular.color);
         this.height = triangular.p3.y - triangular.p1.y;
         this.width = triangular.p2.x - triangular.p1.x;
+        this.name = "triangle";
         this.p1 = triangular.p1;
         this.p2 = triangular.p2;
         this.p3 = triangular.p3;
+
     }
 
     public getPoint1(): [number, number] {

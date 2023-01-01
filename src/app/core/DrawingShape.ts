@@ -1,3 +1,5 @@
+import { ContextMenu } from "./ContextMenu";
+import { DrawingShapeList } from "./DrawingShapeList";
 import { PositionIndicator } from "./PositionIndicator";
 import { ShapeBoundary } from "./ShapeBoundary";
 
@@ -8,15 +10,22 @@ export abstract class DrawingShape {
     protected height: number = 0;
     protected width: number = 0;
     public id: number = 0;
+    public name: string = "";
     public color: string = "";
     public classes: string[] = [];
     public shapeBoundary: ShapeBoundary;
+    public focused: boolean;
+
+    private degree: number = 0;
 
     protected positionIndicator: PositionIndicator;
     protected initialLocation?: Point = undefined;
     protected htmlElement?: HTMLElement = undefined;
 
+
     private moveable: boolean = false;
+    private rotatable: boolean = false;
+    private contextMenu: ContextMenu;
 
     constructor(id: number, x: number, y: number, color: string) {
         this.x = x;
@@ -25,6 +34,8 @@ export abstract class DrawingShape {
         this.color = color;
         this.shapeBoundary = new ShapeBoundary();
         this.positionIndicator = new PositionIndicator();
+        this.focused = false;
+        this.contextMenu = ContextMenu.getInstance();
     }
 
     public abstract getBoundaryWidth(): number;
@@ -32,40 +43,56 @@ export abstract class DrawingShape {
     public abstract getBoundaryHeight(): number;
     public abstract setBoundaryHeight(height: number): void;
 
+    public contextmenu(event: MouseEvent) {
+        let point = { x: event.offsetX, y: event.offsetY };
+        this.contextMenu = ContextMenu.getInstance();
+        this.contextMenu.setPosition(point);
+        this.contextMenu.show = true;
+        this.contextMenu.setDrawingShape(this);
+        event.preventDefault();
+    }
+
     public isMoveable(): boolean {
         return this.moveable;
     }
 
+    public isRotatable(): boolean {
+        return this.rotatable;
+    }
+
     public setFillColor(color: string) {
-        // if (this.focusedShape) {
-        //     this.focusedShape.color = color;
-        // }
         this.color = color;
     }
 
     public mouseDown(event: Event): void {
-        console.log("mouse down called");
         this.activate(event);
         this.shapeBoundary.setFocusedShape(this)
         this.shapeBoundary.setBoxBoundary();
+        this.contextMenu.show = false;
+
+        let drawingShapeList = DrawingShapeList.getInstance();
+        drawingShapeList.unfocusAll();
+        this.focused = true;
+
+        console.log("shape mouse down");
+        // event.stopPropagation();
         event.preventDefault();
     }
 
-    public mouseUp(event: Event) {
+    public unfocused() {
+        this.focused = false;
+        // console.log(`focused false for ${this.name}`);
+    }
+
+    public mouseUp(event: MouseEvent) {
         this.deactivate();
-        this.shapeBoundary.setBoxBoundary();
+        console.log("shape mouse up");
+        // this.focused = true;
+        // console.log(`focused true for ${this.name}`);
+        // this.shapeBoundary.setBoxBoundary();
+        // event.stopPropagation();
         event.preventDefault();
     }
-
-    // public mouseOut(event: MouseEvent) {
-    //     let t: HTMLElement = (event.target as HTMLElement);
-    //     t.classList.remove("rect_border");
-    // }
-
-    // public mouseOver(event: MouseEvent) {
-    //     let t: HTMLElement = (event.target as HTMLElement);
-    //     t.classList.add("rect_border");
-    // }
 
     public stopResizing() {
         this.shapeBoundary!.stopResizing();
@@ -78,6 +105,7 @@ export abstract class DrawingShape {
 
     public inactive() {
         this.shapeBoundary.inactive();
+        this.contextMenu.show = false;
     }
 
     public move(drag: Point): void {
@@ -96,9 +124,59 @@ export abstract class DrawingShape {
         this.shapeBoundary.setBoxBoundary();
     }
 
+    public rotate(new_location: Point, drag: Point): void {
+
+        let center_x = this.getX() + this.getBoundaryWidth() / 2;
+        let center_y = this.getY() + this.getBoundaryHeight() / 2;
+
+        let dy = new_location.y - center_y;
+        let dx = new_location.x - center_x;
+        let theta = Math.atan(dy / dx);
+        theta *= 180 / Math.PI; // rads to degs
+
+        theta = Math.abs(theta);
+
+        // first quadrant
+        this.degree = theta;
+
+        if (dx < 0 && dy >= 0) {
+            // second quadrant
+            this.degree = 180 - theta;
+        } else if (dx < 0 && dy < 0) {
+            // third quadrant
+            this.degree = 180 + theta;
+        } else if (dx >= 0 && dy < 0) {
+            // fourth quadrant
+            this.degree = 360 - theta;
+        }
+
+
+        // console.log("rotate called");
+        // console.log(new_location);
+        // console.log("center point");
+        // console.log(`center_x : ${center_x} , center_y : ${center_y}`);
+
+        this.shapeBoundary.setBoxBoundary();
+    }
+
+    public getDegree(): number {
+        return this.degree;
+    }
+
+    public getRotationValue(): string {
+        let center_x = this.getX() + this.getBoundaryWidth() / 2;
+        let center_y = this.getY() + this.getBoundaryHeight() / 2;
+        return `rotate(${this.degree},${center_x},${center_y})`;
+    }
+
     public updateMovement(new_location: Point, drag: Point): void {
         this.move(drag);
         this.updateIndicatorPosition(new_location)
+    }
+
+    public updateRotation(new_location: Point, drag: Point): void {
+        this.rotate(new_location, drag);
+        // this.updateIndicatorPosition(new_location)
     }
 
     public updateResize(new_location: Point) {
@@ -136,7 +214,7 @@ export abstract class DrawingShape {
         this.addActiveClassOnElement();
     }
 
-    private deactivate(): void {
+    public deactivate(): void {
         this.setAsNotMoveable();
         this.setPositionIndicatorToHidden();
         this.removeActiveClassFromElement();
@@ -146,12 +224,20 @@ export abstract class DrawingShape {
         this.moveable = true;
     }
 
+    public setAsRotatable() {
+        this.rotatable = true;
+    }
+
     private setInitialLocation() {
         this.initialLocation = { x: this.x, y: this.y };
     }
 
     private setAsNotMoveable() {
         this.moveable = false;
+    }
+
+    public setAsNotRotatable() {
+        this.rotatable = false;
     }
 
     private setPositionIndicatorToVisible() {

@@ -5,6 +5,7 @@ export class Rectangle extends DrawingShape {
         super(rectangular.id, rectangular.x, rectangular.y, rectangular.color);
         this.height = rectangular.height;
         this.width = rectangular.width;
+        this.name = "rectangle";
     }
 
     public getBoundaryWidth(): number {

@@ -1,71 +1,98 @@
-<div class="top">
-</div>
+<div class="top"></div>
+
 <div class="left">
-    <button (click)="rectangleList.add()">Add Box</button>
-    <button (click)="circleList.add()">Add Circle</button>
-    <button (click)="triangleList.add()">Add Triangle</button>
+    <button (click)="drawingShapeList.addRectangle()">Add Box</button>
+    <button (click)="drawingShapeList.addCircle()">Add Circle</button>
+    <button (click)="drawingShapeList.addTriangle()">Add Triangle</button>
 </div>
+
 <div class="center">
     <!-- <div class="position_indicator" *ngIf="positionIndicator.visible" [style.top]="positionIndicator.top"
         [style.left]="positionIndicator.left">
         {{positionIndicator.position_text}}
     </div> -->
-    <svg-container containerId="svg-element" (mouseDownEvent)="mouseDownContainer($event)"
-        (mouseUpEvent)="mouseUpContainer($event)" (mouseOutEvent)="mouseOutContainer($event)"
-        (mouseClickEvent)="containerClick($event)" (mouseMoveEvent)="mouseMove($event)" [height]='800'>
 
-        <div *ngFor="let rectangle of rectangleList.rectangles">
-            <svg-rect [classes]="rectangle.classes" (mouseDownEvent)="rectangle.mouseDown($event)"
-                (clickEvent)="rectangle.click($event)" (mouseUpEvent)="rectangle.mouseUp($event)"
-                [height]="rectangle.getBoundaryHeight()" [width]="rectangle.getBoundaryWidth()"
-                [color]="rectangle.color" [x]="rectangle.getX()" [y]="rectangle.getY()">
-            </svg-rect>
-            <svg-circle (mouseUpEvent)="rectangle.shapeBoundary!.mouseUpResizePoint($event,point)"
-                (mouseDownEvent)="rectangle.shapeBoundary!.mouseDownResizePoint($event,point)" [x]="point.x"
-                [y]="point.y" [color]='"#29b6f2"' [diameter]="rectangle.shapeBoundary!.radiusCircle * 2"
-                *ngFor="let point of rectangle.shapeBoundary!.points">
-            </svg-circle>
-        </div>
+    <div *ngIf="contextMenu.show" class="context_menu" [style.left]="contextMenu.position.x + 'px'"
+        [style.top]="contextMenu.position.y + 'px'">
+        <table class="mxPopupMenu">
+            <tbody>
+                <tr class="mxPopupMenuItem" (click)="drawingShapeList.delete()">
+                    <td class="mxPopupMenuIcon"></td>
+                    <td class="mxPopupMenuItem" align="left">Delete</td>
+                    <td class="mxPopupMenuItem" style="padding-right: 6px; text-align: right;"></td>
+                </tr>
+                <tr class="mxPopupMenuItem" (click)="drawingShapeList.dublicate()">
+                    <td class="mxPopupMenuIcon"></td>
+                    <td class="mxPopupMenuItem" align="left">Dublicate</td>
+                    <td class="mxPopupMenuItem" style="padding-right: 6px; text-align: right;"></td>
+                </tr>
+                <!-- <tr class="mxPopupMenuItem">
+                    <td class="mxPopupMenuIcon"></td>
+                    <td class="mxPopupMenuItem" align="left">Bring Forward</td>
+                    <td class="mxPopupMenuItem" style="padding-right: 6px; text-align: right;"></td>
+                </tr> -->
+                <tr class="mxPopupMenuItem" (click)="drawingShapeList.sendBackward()">
+                    <td class="mxPopupMenuIcon"></td>
+                    <td class="mxPopupMenuItem" align="left">Send Backward</td>
+                    <td class="mxPopupMenuItem" style="padding-right: 6px; text-align: right;"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-        <div *ngFor="let triangle of triangleList.triangles">
-            <svg-polygon [classes]="triangle.classes" (mouseDownEvent)="triangle.mouseDown($event)"
-                (clickEvent)="triangle.click($event)" (mouseUpEvent)="triangle.mouseUp($event)" [borderSize]="2"
-                [points]="[triangle.getPoint1(), triangle.getPoint2(), triangle.getPoint3()]"></svg-polygon>
-            <svg-circle (mouseUpEvent)="triangle.shapeBoundary!.mouseUpResizePoint($event,point)"
-                (mouseDownEvent)="triangle.shapeBoundary!.mouseDownResizePoint($event,point)" [x]="point.x"
-                [y]="point.y" [color]='"#29b6f2"' [diameter]="triangle.shapeBoundary!.radiusCircle * 2"
-                *ngFor="let point of triangle.shapeBoundary!.points">
-            </svg-circle>
-        </div>
+    <svg (mousedown)="mouseDownContainer($event)" (mouseup)="mouseUpContainer($event)"
+        (mouseleave)="mouseOutContainer($event)" (click)="containerClick($event)" (mousemove)="mouseMove($event)">
 
-        <div *ngFor="let circle of circleList.circles">
-            <svg-circle [classes]="circle.classes" (mouseDownEvent)="circle.mouseDown($event)"
-                (clickEvent)="circle.click($event)" (mouseUpEvent)="circle.mouseUp($event)" [color]="circle.color"
-                [x]="circle.getX()" [y]="circle.getY()" [diameter]="circle.diameter">
-            </svg-circle>
-            <svg-circle (mouseUpEvent)="circle.shapeBoundary!.mouseUpResizePoint($event,point)"
-                (mouseDownEvent)="circle.shapeBoundary!.mouseDownResizePoint($event,point)" [x]="point.x" [y]="point.y"
-                [color]='"#29b6f2"' [diameter]="circle.shapeBoundary!.radiusCircle * 2"
-                *ngFor="let point of circle.shapeBoundary!.points">
-            </svg-circle>
-        </div>
+        <g *ngFor="let shape of drawingShapeList.drawingShapes">
+            <rect *ngIf="shape.name == 'rectangle'" (contextmenu)="shape.contextmenu($event)"
+                (mousedown)="shape.mouseDown($event)" (click)="shape.click($event)" (mouseup)="shape.mouseUp($event)"
+                [attr.height]="shape.getBoundaryHeight()" [attr.width]="shape.getBoundaryWidth()"
+                [attr.x]="shape.getX()" [attr.y]="shape.getY()" [attr.transform]="shape.getRotationValue()"
+                [style.fill]="shape.color">
+            </rect>
+            <circle *ngIf="shape.name == 'circle'" (contextmenu)="shape.contextmenu($event)"
+                [attr.classes]="shape.classes" (mousedown)="shape.mouseDown($event)" (click)="shape.click($event)"
+                (mouseup)="shape.mouseUp($event)" [style.fill]="shape.color"
+                [attr.cx]="shape.getX()+(drawingShapeList.getCircle(shape)).diameter/2"
+                [attr.cy]="shape.getY()+(drawingShapeList.getCircle(shape)).diameter/2"
+                [attr.r]="(drawingShapeList.getCircle(shape)).diameter/2">
+            </circle>
+            <polygon *ngIf="shape.name == 'triangle'" (contextmenu)="shape.contextmenu($event)"
+                [attr.classes]="shape.classes" (mousedown)="shape.mouseDown($event)" (click)="shape.click($event)"
+                (mouseup)="shape.mouseUp($event)" [style.fill]="shape.color"
+                [attr.points]="[drawingShapeList.getTriangle(shape).getPoint1(),drawingShapeList.getTriangle(shape).getPoint2(),drawingShapeList.getTriangle(shape).getPoint3()]">
+            </polygon>
 
-        <svg-line [classes]="line.classes" [x0]="l.x0" [x1]="l.x1" [y0]="l.y0" (clickEvent)="line.click($event,l)"
-            [y1]="l.y1" [borderSize]="line.line_border_size" *ngFor="let l of line.lines"> </svg-line>
-        <svg-circle [x]="l_point.x" [y]="l_point.y" [diameter]="line.diameterCircle"
-            (mouseDownEvent)="line.mouseDown($event,l_point)" (mouseUpEvent)="line.mouseUp($event)" [color]='"#29b6f2"'
-            *ngFor="let l_point of line.points">
-        </svg-circle>
+            <rect *ngIf="shape.focused" class="boundary" [attr.height]="shape.getBoundaryHeight()"
+                [attr.width]="shape.getBoundaryWidth()" [attr.x]="shape.getX()" [attr.y]="shape.getY()"
+                [attr.transform]="shape.getRotationValue()"></rect>
 
-    </svg-container>
+            <circle (mouseup)="shape.shapeBoundary!.mouseUpResizePoint($event,point)"
+                (mousedown)="shape.shapeBoundary!.mouseDownResizePoint($event,point)" [attr.cx]="point.x"
+                [attr.cy]="point.y" [attr.fill]='"#29b6f2"' [attr.r]="shape.shapeBoundary!.radiusCircle"
+                *ngFor="let point of shape.shapeBoundary!.points">
+            </circle>
+
+
+            <circle *ngIf="shape.focused" [attr.cx]="shape.getX()+ shape.getBoundaryWidth() + 10"
+                (mousedown)="shape.setAsRotatable()" [attr.cy]="shape.getY() + shape.getBoundaryHeight()/2"
+                [attr.fill]='"#000"' [attr.r]="shape.shapeBoundary!.radiusCircle"
+                [attr.transform]="shape.getRotationValue()">
+            </circle>
+
+
+        </g>
+
+    </svg>
 </div>
+
 <div class="right">
     <div class="color_palette">
         <div class="left_arrow">
             <fa-icon [icon]="faAngleLeft" (click)="switchColors(0)"></fa-icon>
         </div>
         <div class="palettes">
-            <div class="color" [style.background]="color" (click)="fillColor(color)"
+            <div class="color" [style.background]="color" (click)="drawingShapeList.fillColor(color)"
                 *ngFor="let color of active_colors"></div>
         </div>
         <div class="right_arrow">
@@ -78,4 +105,5 @@
     </div>
 
 </div>
+
 <div class="bottom"></div>
